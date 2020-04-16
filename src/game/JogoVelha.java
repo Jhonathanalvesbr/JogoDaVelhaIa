@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -18,6 +20,10 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int matriz[][] = new int[3][3], player = 2, v1, v2, v3, vitoria;
     private Arvore ia;
     private int linhaWin[] = new int[4];
+    private int vezIa = 0, vezPlayer = 0;
+    private boolean comecaPlayer = false, jogadaIa = true;
+    private int movimento = -1;
+    int temp = 0;
 
     public JogoVelha() {
         v2 = v1 = 0;
@@ -54,6 +60,12 @@ public class JogoVelha extends JPanel implements MouseListener {
         g.setColor(Color.BLACK);
         g.drawLine(133, 0, 133, 400);
         g.drawLine(266, 0, 266, 400);
+        if (jogadaIa) {
+            vezIa();
+            jogadaIa = !jogadaIa;
+            matriz[movimento / 3][movimento % 3] = 1;
+            repaint();
+        }
 
         for (int linha = 0; linha < 3; linha++) {
             for (int col = 0; col < 3; col++) {
@@ -68,12 +80,7 @@ public class JogoVelha extends JPanel implements MouseListener {
         }
 
         if (vitoria != 0) {
-
-            if (player == 1) {
-                player++;
-            } else {
-                player--;
-            }
+            player = 2;
             g.setColor(Color.RED);
             if (linhaWin[0] == 0) {
                 g.drawLine(0, 66, 400, 66);
@@ -93,7 +100,6 @@ public class JogoVelha extends JPanel implements MouseListener {
                 g.drawLine(380, 0, 0, 380);
             }
             g.setColor(Color.black);
-            repaint();
             vitoria = -1;
         }
 
@@ -112,29 +118,34 @@ public class JogoVelha extends JPanel implements MouseListener {
     }
 
     private void ganhou() {
+        boolean verifica = false;
         for (int linha = 0; linha < 3; linha++) {
             if (matriz[linha][0] != 0 && matriz[linha][0] == matriz[linha][1] && matriz[linha][0] == matriz[linha][2]) {
                 linhaWin[0] = linha;
                 vitoria = matriz[linha][0];
+                verifica = true;
             }
             if (matriz[0][linha] != 0 && matriz[0][linha] == matriz[1][linha] && matriz[0][linha] == matriz[2][linha]) {
                 linhaWin[1] = linha;
                 vitoria = matriz[0][linha];
+                verifica = true;
             }
         }
-        if (matriz[0][0] != 0 && matriz[0][0] == matriz[1][1] && matriz[0][0] == matriz[2][2]) {
-            linhaWin[2] = 0;
-            vitoria = matriz[0][0];
-        } else if (matriz[0][2] != 0 && matriz[0][2] == matriz[1][1] && matriz[0][2] == matriz[2][0]) {
-            linhaWin[2] = 1;
-            vitoria = matriz[0][2];
-        } else {
-            int x = 0;
-            while (matriz[x / 3][x % 3] != 0) {
-                x++;
-                if (x == 9) {
-                    vitoria = 3;
-                    break;
+        if (!verifica) {
+            if (matriz[0][0] != 0 && matriz[0][0] == matriz[1][1] && matriz[0][0] == matriz[2][2]) {
+                linhaWin[2] = 0;
+                vitoria = matriz[0][0];
+            } else if (matriz[0][2] != 0 && matriz[0][2] == matriz[1][1] && matriz[0][2] == matriz[2][0]) {
+                linhaWin[2] = 1;
+                vitoria = matriz[0][2];
+            } else {
+                int x = 0;
+                while (matriz[x / 3][x % 3] != 0) {
+                    x++;
+                    if (x == 9) {
+                        vitoria = 3;
+                        break;
+                    }
                 }
             }
         }
@@ -150,46 +161,124 @@ public class JogoVelha extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
         int linha = e.getY() / 133;
         int coluna = e.getX() / 133;
-
-        if (player == 1 && matriz[linha][coluna] == 0) {
-            matriz[linha][coluna] = player++;
-        } else if (player == 2 && matriz[linha][coluna] == 0) {
-            matriz[linha][coluna] = player--;
+        if (comecaPlayer) {
+            vez(linha, coluna);
+        } else {
+            vezIa(linha, coluna);
         }
-        
-        ia = new Arvore(matriz);
-        ia.c = 'A';
-        ia.t = ia.c;
-        ia.jogador = 2;
-        ia.geraArvore(ia);
-        ia.movimento = -1;
-        ia.vitoria(ia);
-        if (ia.movimento == -1) {
-            ia.empate(ia);
-        }
-        if (ia.movimento == -1) {
-            ia.derrota(ia);
-        }
-        matriz[ia.movimento / 3][ia.movimento % 3] = 1;
+        repaint();
         ganhou();
-        player++;
+        if (vitoria == 3) {
+            int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
+            if (opcao == 0) {
+                limpa();
+            }
+        } else if (vitoria == 1) {
+            int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + vitoria + " ganhou!!\nDeseja jogar novamente?");
+            if (opcao == 0) {
+                limpa();
+            }
+        } else if (vitoria == 2) {
+            int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + vitoria + " ganhou!!\nDeseja jogar novamente?");
+            if (opcao == 0) {
+                limpa();
+            }
+        }
+        repaint();
+
+    }
+
+    public void vezIa(int linha, int coluna) {
+        if (vezIa > vezPlayer) {
+            if (player == 1 && matriz[linha][coluna] == 0) {
+                matriz[linha][coluna] = player;
+
+            } else if (player == 2 && matriz[linha][coluna] == 0) {
+                matriz[linha][coluna] = player;
+                vezPlayer++;
+            }
+        }
+        ganhou();
         repaint();
         if (vitoria == 3) {
             int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
             if (opcao == 0) {
                 limpa();
-                repaint();
+                jogadaIa = !jogadaIa;
             }
-        } else if (vitoria != 0 && vitoria != -1) {
-            int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + player + " ganhou!!\nDeseja jogar novamente?");
+        } else if (vitoria == 1) {
+            int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + vitoria + " ganhou!!\nDeseja jogar novamente?");
             if (opcao == 0) {
                 limpa();
-                repaint();
+                jogadaIa = !jogadaIa;
+            }
+        } else if (vitoria == 2) {
+            int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + vitoria + " ganhou!!\nDeseja jogar novamente?");
+            if (opcao == 0) {
+                limpa();
+                jogadaIa = !jogadaIa;
+            }
+        } else {
+            vezIa();
+        }
+    }
+
+    public void vezIa() {
+        if (vezPlayer == vezIa) {
+            vezIa++;
+            ia = new Arvore(matriz);
+            ia.c = 'A';
+            ia.t = ia.c;
+            ia.jogador = 2;
+            ia.geraArvore(ia);
+            ia.movimento = -1;
+            ia.vitoria(ia);
+            if (ia.movimento == -1) {
+                ia.empate(ia);
+            }
+            if (ia.movimento == -1) {
+                ia.derrota(ia);
+            }
+            if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
+                movimento = ia.movimento;
+                matriz[movimento / 3][movimento % 3] = 1;
+            }
+        }
+    }
+
+    public void vez(int linha, int coluna) {
+        if (vezIa == vezPlayer) {
+            if (player == 1 && matriz[linha][coluna] == 0) {
+                matriz[linha][coluna] = player++;
+            } else if (player == 2 && matriz[linha][coluna] == 0) {
+                matriz[linha][coluna] = player--;
+                vezPlayer++;
             }
         }
 
+        if (vezPlayer > vezIa) {
+            vezIa++;
+
+            ia = new Arvore(matriz);
+            ia.c = 'A';
+            ia.t = ia.c;
+            ia.jogador = 2;
+            ia.geraArvore(ia);
+            ia.movimento = -1;
+            ia.vitoria(ia);
+            if (ia.movimento == -1) {
+                ia.empate(ia);
+            }
+            if (ia.movimento == -1) {
+                ia.derrota(ia);
+            }
+            if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
+                movimento = ia.movimento;
+            }
+        }
     }
 
     @Override
