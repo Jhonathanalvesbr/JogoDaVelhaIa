@@ -16,7 +16,6 @@ public class JogoVelha extends JPanel implements MouseListener {
     private Font fontePequena = new Font("Consolas", Font.BOLD, 10);
     private Font fonteMedia = new Font("Consolas", Font.BOLD, 13);
     private int matriz[][] = new int[3][3], player = 2, v1, v2, v3, vitoria;
-    private boolean win = false;
     private Arvore ia;
     private int linhaWin[] = new int[4];
 
@@ -31,31 +30,6 @@ public class JogoVelha extends JPanel implements MouseListener {
     @Override
     public void paintComponent(Graphics g2) {
         Graphics2D g = (Graphics2D) g2.create();
-
-        if (win) {
-            win = false;
-
-            if (player == 1) {
-                player++;
-            } else {
-                player--;
-            }
-            if (vitoria == 3) {
-                vitoria = 0;
-                int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
-                if (opcao == 0) {
-                    limpa();
-                    repaint();
-                }
-            } else {
-                vitoria = 0;
-                int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + player + " ganhou!!\nDeseja jogar novamente?");
-                if (opcao == 0) {
-                    limpa();
-                    repaint();
-                }
-            }
-        }
 
         g.setStroke(new BasicStroke(3));
         g.setColor(Color.WHITE);
@@ -94,7 +68,11 @@ public class JogoVelha extends JPanel implements MouseListener {
         }
 
         if (vitoria != 0) {
-            win = true;
+            if (player == 1) {
+                player++;
+            } else {
+                player--;
+            }
             g.setColor(Color.RED);
             if (linhaWin[0] == 0) {
                 g.drawLine(0, 66, 400, 66);
@@ -196,6 +174,21 @@ public class JogoVelha extends JPanel implements MouseListener {
         ganhou();
         player++;
         repaint();
+        if (vitoria == 3) {
+                vitoria = 0;
+                int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
+                if (opcao == 0) {
+                    limpa();
+                    repaint();
+                }
+            } else if(vitoria != 0) {
+                vitoria = 0;
+                int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + player + " ganhou!!\nDeseja jogar novamente?");
+                if (opcao == 0) {
+                    limpa();
+                    repaint();
+                }
+            }
 
     }
 
