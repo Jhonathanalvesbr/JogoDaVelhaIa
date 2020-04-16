@@ -68,6 +68,7 @@ public class JogoVelha extends JPanel implements MouseListener {
         }
 
         if (vitoria != 0) {
+
             if (player == 1) {
                 player++;
             } else {
@@ -93,6 +94,7 @@ public class JogoVelha extends JPanel implements MouseListener {
             }
             g.setColor(Color.black);
             repaint();
+            vitoria = -1;
         }
 
     }
@@ -141,7 +143,7 @@ public class JogoVelha extends JPanel implements MouseListener {
         } else if (vitoria == 2) {
             v2++;
         } else if (vitoria == 3) {
-            v3= v3 +1;
+            v3++;
         }
 
     }
@@ -156,7 +158,7 @@ public class JogoVelha extends JPanel implements MouseListener {
         } else if (player == 2 && matriz[linha][coluna] == 0) {
             matriz[linha][coluna] = player--;
         }
-
+        
         ia = new Arvore(matriz);
         ia.c = 'A';
         ia.t = ia.c;
@@ -175,20 +177,18 @@ public class JogoVelha extends JPanel implements MouseListener {
         player++;
         repaint();
         if (vitoria == 3) {
-                vitoria = 0;
-                int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
-                if (opcao == 0) {
-                    limpa();
-                    repaint();
-                }
-            } else if(vitoria != 0) {
-                vitoria = 0;
-                int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + player + " ganhou!!\nDeseja jogar novamente?");
-                if (opcao == 0) {
-                    limpa();
-                    repaint();
-                }
+            int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
+            if (opcao == 0) {
+                limpa();
+                repaint();
             }
+        } else if (vitoria != 0 && vitoria != -1) {
+            int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + player + " ganhou!!\nDeseja jogar novamente?");
+            if (opcao == 0) {
+                limpa();
+                repaint();
+            }
+        }
 
     }
 
