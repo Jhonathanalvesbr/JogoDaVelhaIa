@@ -22,6 +22,7 @@ public class Game {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setResizable(false);
         JogoVelha game = new JogoVelha();
         game.setBounds(0, 0, 400, 400);
         frame.add(game);
