@@ -7,12 +7,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class JogoVelha extends JPanel implements MouseListener {
+public class JogoVelha extends JPanel implements MouseListener, MouseMotionListener {
 
     private Font fonte = new Font("Consolas", Font.BOLD, 20);
     private Font fontePequena = new Font("Consolas", Font.BOLD, 10);
@@ -20,12 +21,12 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia;
-    private int players = 2;
+    private int players = 1;
     private boolean jogada = true;
     private boolean playerIa = true;
     private boolean go = false;
     boolean temp = false;
-    
+
     public JogoVelha() {
         v2 = v1 = 0;
         for (int i = 0; i < 4; i++) {
@@ -39,7 +40,7 @@ public class JogoVelha extends JPanel implements MouseListener {
 
         g.setStroke(new BasicStroke(3));
         g.setColor(Color.WHITE);
-        g.fillRect(v1, v1, 400, 400);
+        g.fillRect(0, 0, 400, 400);
         g.setFont(fontePequena);
         g.setColor(Color.blue);
         g.drawString("Jogador 1: " + v1, 10, 10);
@@ -51,7 +52,7 @@ public class JogoVelha extends JPanel implements MouseListener {
         g.setColor(Color.red);
         g.drawString("Jogador 2: " + v2, 310, 10);
         g.setColor(Color.black);
-
+        System.out.println("sssss");
         g.setFont(fonte);
         g.drawLine(0, 133, 400, 133);
         g.drawLine(0, 266, 400, 266);
@@ -68,28 +69,29 @@ public class JogoVelha extends JPanel implements MouseListener {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JogoVelha.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                ganhou();
                 go = !go;
+                repaint();
             }
-        } else {
-            g.setColor(Color.RED);
-            if (linhaWin[0] == 0) {
-                g.drawLine(0, 66, 400, 66);
-            } else if (linhaWin[0] == 1) {
-                g.drawLine(0, 199, 400, 199);
-            } else if (linhaWin[0] == 2) {
-                g.drawLine(0, 332, 400, 332);
-            } else if (linhaWin[1] == 0) {
-                g.drawLine(66, 0, 66, 400);
-            } else if (linhaWin[1] == 1) {
-                g.drawLine(199, 0, 199, 400);
-            } else if (linhaWin[1] == 2) {
-                g.drawLine(332, 0, 332, 400);
-            } else if (linhaWin[2] == 0) {
-                g.drawLine(0, 0, 400, 400);
-            } else if (linhaWin[2] == 1) {
-                g.drawLine(380, 0, 0, 380);
-            }
-            g.setColor(Color.black);
+        }
+
+        g.setColor(Color.RED);
+        if (linhaWin[0] == 0) {
+            g.drawLine(0, 66, 400, 66);
+        } else if (linhaWin[0] == 1) {
+            g.drawLine(0, 199, 400, 199);
+        } else if (linhaWin[0] == 2) {
+            g.drawLine(0, 332, 400, 332);
+        } else if (linhaWin[1] == 0) {
+            g.drawLine(66, 0, 66, 400);
+        } else if (linhaWin[1] == 1) {
+            g.drawLine(199, 0, 199, 400);
+        } else if (linhaWin[1] == 2) {
+            g.drawLine(332, 0, 332, 400);
+        } else if (linhaWin[2] == 0) {
+            g.drawLine(0, 0, 400, 400);
+        } else if (linhaWin[2] == 1) {
+            g.drawLine(380, 0, 0, 380);
         }
 
         for (int linha = 0; linha < 3; linha++) {
@@ -111,9 +113,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 repaint();
             }
         }
-        ganhou();
-        if (vitoria != 0) {
-            
+        if (temp) {
             temp = !temp;
         }
     }
@@ -129,7 +129,10 @@ public class JogoVelha extends JPanel implements MouseListener {
         if (players == 1) {
             solo(linha, coluna);
         }
+        opcao();
+        temp = !temp;
         repaint();
+        ganhou();
     }
 
     public void opcao() {
@@ -270,6 +273,7 @@ public class JogoVelha extends JPanel implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -281,6 +285,21 @@ public class JogoVelha extends JPanel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if (!temp && vitoria != 0) {
+            opcao();
+            vitoria = 0;
+        }
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

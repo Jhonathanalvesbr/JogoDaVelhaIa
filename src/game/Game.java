@@ -27,6 +27,7 @@ public class Game {
         game.setBounds(0, 0, 400, 400);
         frame.add(game);
         frame.addMouseListener(game);
+        frame.addMouseMotionListener(game);
     }
     
 }
