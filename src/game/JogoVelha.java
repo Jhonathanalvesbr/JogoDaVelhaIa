@@ -23,7 +23,7 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int vezIa = 0, vezPlayer = 0;
     private boolean comecaPlayer = true, jogadaIa = false;
     private Graphics2D g;
-    
+
     public JogoVelha() {
         v2 = v1 = 0;
         for (int i = 0; i < 4; i++) {
@@ -34,7 +34,7 @@ public class JogoVelha extends JPanel implements MouseListener {
     @Override
     public void paintComponent(Graphics g2) {
         g = (Graphics2D) g2.create();
-        
+
         g.setStroke(new BasicStroke(3));
         g.setColor(Color.WHITE);
         g.fillRect(v1, v1, 400, 400);
@@ -75,7 +75,6 @@ public class JogoVelha extends JPanel implements MouseListener {
         }
 
         if (vitoria != 0) {
-            player = 2;
             g.setColor(Color.RED);
             if (linhaWin[0] == 0) {
                 g.drawLine(0, 66, 400, 66);
@@ -99,7 +98,8 @@ public class JogoVelha extends JPanel implements MouseListener {
         }
 
     }
-    public void opcao(){
+
+    public void opcao() {
         if (vitoria == 3) {
             int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
             if (opcao == 0) {
@@ -117,6 +117,7 @@ public class JogoVelha extends JPanel implements MouseListener {
             }
         }
     }
+
     private void limpa() {
         for (int linha = 0; linha < 3; linha++) {
             for (int col = 0; col < 3; col++) {
