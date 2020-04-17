@@ -22,8 +22,6 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int linhaWin[] = new int[4];
     private int vezIa = 0, vezPlayer = 0;
     private boolean comecaPlayer = true, jogadaIa = false;
-    private int movimento = -1;
-    int temp = 0;
 
     public JogoVelha() {
         v2 = v1 = 0;
@@ -100,7 +98,14 @@ public class JogoVelha extends JPanel implements MouseListener {
             g.setColor(Color.black);
             vitoria = -1;
         }
-
+        if (vitoria == 0) {
+            try {
+                Thread.sleep(1000);
+                System.out.println("sssssssssssssssssssss");
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JogoVelha.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private void limpa() {
@@ -185,7 +190,6 @@ public class JogoVelha extends JPanel implements MouseListener {
                 limpa();
             }
         }
-        
 
     }
 
@@ -221,7 +225,6 @@ public class JogoVelha extends JPanel implements MouseListener {
                 ia.derrota(ia);
             }
             if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
-                movimento = ia.movimento;
                 matriz[movimento / 3][movimento % 3] = 1;
             }
         }
@@ -254,6 +257,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 limpa();
             }
         }
+
         if (vezPlayer > vezIa) {
             vezIa++;
 
@@ -271,8 +275,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 ia.derrota(ia);
             }
             if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
-                movimento = ia.movimento;
-                matriz[movimento / 3][movimento % 3] = 1;
+                matriz[ia.movimento / 3][ia.movimento % 3] = 1;
             }
         }
         repaint();
