@@ -7,7 +7,7 @@ public class Arvore {
 
     private int altura;
     private int qntAltura = 8;
-    private int qntNo = 1;
+    private int qntNo = 6;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
@@ -27,7 +27,7 @@ public class Arvore {
     public Arvore geraArvore(Arvore no) {
         Arvore aux;
         if (no.altura >= qntAltura) {
-            calcula(no);
+            verificaJogada(no);
             return no;
         } else {
             for (int i = 0; i < qntNo; i++) {
@@ -36,7 +36,7 @@ public class Arvore {
                 movimenta(no, novoFilho);
                 novoFilho.altura = no.altura + 1;
                 no.filho.add(novoFilho);
-                calcula(novoFilho);
+                verificaJogada(novoFilho);
                 minimax(no);
                 if (novoFilho.vitoria == true) {
                     return novoFilho;
@@ -163,10 +163,10 @@ public class Arvore {
          System.out.println(m);
          g.game[m/3][m%3] = 2;
          System.out.println(g.movimento);*/
-        // g.imprime(g.game);
-        //System.out.println("-----------------");
-        //g.exibe(g);
-        /* for (int i = 0; i < 10; i++) {
+    // g.imprime(g.game);
+    //System.out.println("-----------------");
+    //g.exibe(g);
+    /* for (int i = 0; i < 10; i++) {
          int j = in.nextInt();
          System.out.println(j);
          }*/
@@ -174,8 +174,8 @@ public class Arvore {
         System.out.println("-------");
         System.out.println("");
         g.jogador = 2;*/
-        //g.mov = 0;
-        /*int j;
+    //g.mov = 0;
+    /*int j;
         for (int i = 0; i < 9; i++) {
             g.game[i / 3][i % 3] = 0;
         }
@@ -209,7 +209,6 @@ public class Arvore {
             }
         }
     }*/
-
     private void minimax(Arvore no) {
         if (no.jogador == 1) {
             int size = no.filho.size();
@@ -337,7 +336,7 @@ public class Arvore {
         }
     }
 
-    public void calcula(Arvore no) {
+    public void verificaJogada(Arvore no) {
         //boolean vitoriaIa = vitoriaJogador(no.game); //Jogador=2
         if (no.jogador == 1) {//Ia
             if (verificaJogo(no.game)) {
@@ -345,7 +344,7 @@ public class Arvore {
                 no.vitoria = true;
             } else {
                 for (int x = 0; x < 9; x++) {
-                    if(no.game[x / 3][x % 3] == 0){
+                    if (no.game[x / 3][x % 3] == 0) {
                         return;
                     }
                 }
@@ -358,7 +357,7 @@ public class Arvore {
                 no.vitoria = true;
             } else {
                 for (int x = 0; x < 9; x++) {
-                    if(no.game[x / 3][x % 3] == 0){
+                    if (no.game[x / 3][x % 3] == 0) {
                         return;
                     }
                 }
