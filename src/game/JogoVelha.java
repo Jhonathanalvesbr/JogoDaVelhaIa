@@ -63,8 +63,6 @@ public class JogoVelha extends JPanel implements MouseListener {
         if (jogadaIa) {
             vezIa();
             jogadaIa = !jogadaIa;
-            matriz[movimento / 3][movimento % 3] = 1;
-            repaint();
         }
 
         for (int linha = 0; linha < 3; linha++) {
@@ -115,6 +113,7 @@ public class JogoVelha extends JPanel implements MouseListener {
             linhaWin[i] = -1;
         }
         player = 2;
+        repaint();
     }
 
     private void ganhou() {
@@ -169,7 +168,6 @@ public class JogoVelha extends JPanel implements MouseListener {
         } else {
             vezIa(linha, coluna);
         }
-        repaint();
         ganhou();
         if (vitoria == 3) {
             int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
@@ -187,7 +185,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 limpa();
             }
         }
-        repaint();
+        
 
     }
 

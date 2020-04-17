@@ -7,7 +7,7 @@ public class Arvore {
 
     private int altura;
     private int qntAltura = 8;
-    private int qntNo = 5;
+    private int qntNo = 1;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
