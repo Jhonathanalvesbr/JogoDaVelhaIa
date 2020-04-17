@@ -22,23 +22,22 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int linhaWin[] = new int[4];
     private int vezIa = 0, vezPlayer = 0;
     private boolean comecaPlayer = true, jogadaIa = false;
-
+    private Graphics2D g;
+    
     public JogoVelha() {
         v2 = v1 = 0;
         for (int i = 0; i < 4; i++) {
             linhaWin[i] = -1;
         }
-        limpa();
     }
 
     @Override
     public void paintComponent(Graphics g2) {
-        Graphics2D g = (Graphics2D) g2.create();
-
+        g = (Graphics2D) g2.create();
+        
         g.setStroke(new BasicStroke(3));
         g.setColor(Color.WHITE);
         g.fillRect(v1, v1, 400, 400);
-
         g.setFont(fontePequena);
         g.setColor(Color.blue);
         g.drawString("Jogador 1: " + v1, 10, 10);
@@ -128,6 +127,7 @@ public class JogoVelha extends JPanel implements MouseListener {
             linhaWin[i] = -1;
         }
         player = 2;
+
         repaint();
     }
 
