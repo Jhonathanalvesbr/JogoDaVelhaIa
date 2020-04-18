@@ -20,10 +20,12 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     private Font fonteMedia = new Font("Consolas", Font.BOLD, 13);
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
-    private Arvore ia;
+    private Arvore ia, ia2;
+    private int qntNo = 6, qntAltura = 2, qntNo2 = 4, qntAltura2 = 2;
+    int delay = 1500;
     int players = 1;
     private boolean jogada = true;
-    boolean comeca = true;
+    boolean comeca = false;
 
     JogoVelha() {
         v2 = v1 = 0;
@@ -227,6 +229,9 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             } else {
                 ia = new Arvore(matriz);
             }
+            ia.qntAltura = qntAltura;
+            ia.qntNo = qntNo;
+
             ia.c = 'A';
             ia.t = ia.c;
             ia.jogador = 2;
@@ -248,6 +253,72 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             }
             repaint();
             ganhou();
+            opcao();
+        } else if (players == 0) {
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            ia = new Arvore(matriz);
+            ia.qntAltura = qntAltura;
+            ia.qntNo = qntNo;
+
+            ia.c = 'A';
+            ia.t = ia.c;
+            ia.jogador = 2;
+            ia.geraArvore(ia);
+            ia.movimento = -1;
+            ia.vitoria(ia);
+            if (ia.movimento == -1) {
+                ia.empate(ia);
+            }
+            if (ia.movimento == -1) {
+                ia.derrota(ia);
+            }
+            matriz[ia.movimento / 3][ia.movimento % 3] = 1;
+            repaint();
+            ganhou();
+            if (vitoria == 0) {
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                int mat[][] = new int[3][3];
+
+                for (int i = 0; i < 9; i++) {
+                    if (matriz[i / 3][i % 3] == 1) {
+                        mat[i / 3][i % 3] = 2;
+                    } else if (matriz[i / 3][i % 3] == 2) {
+                        mat[i / 3][i % 3] = 1;
+                    } else {
+                        mat[i / 3][i % 3] = 0;
+                    }
+                }
+                ia2 = new Arvore(mat);
+                ia2.qntAltura = qntAltura2;
+                ia2.qntNo = qntNo2;
+
+                ia2.c = 'A';
+                ia2.t = ia2.c;
+                ia2.jogador = 2;
+                ia2.geraArvore(ia2);
+                ia2.movimento = -1;
+                ia2.vitoria(ia2);
+                if (ia2.movimento == -1) {
+                    ia2.empate(ia2);
+                }
+                if (ia2.movimento == -1) {
+                    ia2.derrota(ia2);
+                }
+                matriz[ia2.movimento / 3][ia2.movimento % 3] = 2;
+                repaint();
+                ganhou();
+
+            }
             opcao();
         }
     }

@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    private int qntAltura = 3;
-    private int qntNo = 6;
+    int qntAltura = 6;
+    int qntNo = 7;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
@@ -126,12 +126,12 @@ public class Arvore {
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
         } //ia = 1; player =2;
-        g.game[0][0] = 2;
-        g.game[0][1] = 0;
-        g.game[0][2] = 0;
-        g.game[1][0] = 0;
-        g.game[1][1] = 2;
-        g.game[1][2] = 1;
+        g.game[0][0] = 0;
+        g.game[0][1] = 2;
+        g.game[0][2] = 2;
+        g.game[1][0] = 1;
+        g.game[1][1] = 0;
+        g.game[1][2] = 0;
         g.game[2][0] = 0;
         g.game[2][1] = 0;
         g.game[2][2] = 0;

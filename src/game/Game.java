@@ -35,6 +35,9 @@ public class Game {
             if(game.players == 1){
                 game.vezIa();
             }
+            else if(game.players == 0){
+                game.vezIa();
+            }
         }
     }
 
