@@ -41,7 +41,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         g.fillRect(0, 0, 400, 400);
         g.setFont(fontePequena);
         g.setColor(Color.blue);
-        
+
         g.drawString("Jogador 1: " + v1, 10, 10);
         g.setColor(Color.black);
         g.setFont(fonteMedia);
@@ -104,7 +104,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         }
         if (players == 1) {
             solo(linha, coluna);
-            
+
         }
 
     }
@@ -205,7 +205,11 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
 
     public void vezIa() {
         if (comeca && players == 1) {
-
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
             comeca = !comeca;
 
             int mat[][] = new int[3][3];

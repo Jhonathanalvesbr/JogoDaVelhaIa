@@ -33,7 +33,6 @@ public class Game {
         
         while(true){
             if(game.players == 1){
-
                 game.vezIa();
             }
         }
