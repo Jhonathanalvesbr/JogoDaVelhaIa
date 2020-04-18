@@ -175,7 +175,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         }
         if (vitoria == 1) {
             v1++;
-        } else if (vitoria == 2 && jogada) {
+        } else if (vitoria == 2) {
             v2++;
         } else if (vitoria == 3) {
             v3++;
@@ -191,20 +191,12 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         }
 
         comeca = !comeca;
-        //vezIa();
-
     }
 
     public void vezIa() {
-        if (!comeca && players == 1) {
-
+        if (comeca && players == 1) {
+            
             comeca = !comeca;
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(JogoVelha.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
             int mat[][] = new int[3][3];
             if (jogada) {
