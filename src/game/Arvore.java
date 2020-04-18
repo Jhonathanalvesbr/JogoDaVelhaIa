@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    private int qntAltura = 9;
-    private int qntNo = 3;
+    private int qntAltura = 3;
+    private int qntNo = 6;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
@@ -23,6 +23,14 @@ public class Arvore {
         for (int x = 0; x < 9; x++) {
             this.game[x / 3][x % 3] = game[x / 3][x % 3];
         }
+        int count = 0;
+            for (int x = 0; x < 9; x++) {
+            if(game[x / 3][x % 3] == 0){
+                count++;
+            }
+        }
+            if(qntNo > count)
+                qntNo = count;
     }
 
     public Arvore geraArvore(Arvore no) {
@@ -31,6 +39,7 @@ public class Arvore {
             verificaJogada(no);
             return no;
         } else {
+            
             for (int i = 0; i < qntNo; i++) {
                 Arvore novoFilho = new Arvore(no.game);
                 alteraJogador(no, novoFilho);
@@ -104,7 +113,7 @@ public class Arvore {
         }
     }
 
-   /* public static void main(String[] args) {
+    public static void main(String[] args) {
         int jogo[][] = new int[3][3];
         for (int x = 0; x < 9; x++) {
             jogo[x / 3][x % 3] = 0;
@@ -116,16 +125,16 @@ public class Arvore {
 
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
-        }
-        g.game[0][0] = 0;
+        } //ia = 1; player =2;
+        g.game[0][0] = 2;
         g.game[0][1] = 0;
-        g.game[0][2] = 1;
+        g.game[0][2] = 0;
         g.game[1][0] = 0;
         g.game[1][1] = 2;
-        g.game[1][2] = 0;
-        g.game[2][0] = 2;
-        g.game[2][1] = 2;
-        g.game[2][2] = 1;
+        g.game[1][2] = 1;
+        g.game[2][0] = 0;
+        g.game[2][1] = 0;
+        g.game[2][2] = 0;
 
         g.imprime(g.game);
         g.c = 'A';
@@ -210,7 +219,7 @@ public class Arvore {
 
             }
         }*/
-    //}
+    }
     private void minimax(Arvore no) {
         if (no.jogador == 1) {
             int size = no.filho.size();

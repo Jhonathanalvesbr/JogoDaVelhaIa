@@ -41,6 +41,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         g.fillRect(0, 0, 400, 400);
         g.setFont(fontePequena);
         g.setColor(Color.blue);
+        
         g.drawString("Jogador 1: " + v1, 10, 10);
         g.setColor(Color.black);
         g.setFont(fonteMedia);
@@ -97,13 +98,15 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         int coluna = e.getX() / 133;
         if (players == 2) {
             multiplayer(linha, coluna);
+            repaint();
+            ganhou();
+            opcao();
         }
         if (players == 1) {
             solo(linha, coluna);
+            
         }
-        repaint();
-        ganhou();
-        opcao();
+
     }
 
     public void opcao() {
@@ -186,16 +189,23 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     public void solo(int linha, int coluna) {
         if (jogada && matriz[linha][coluna] == 0) {
             matriz[linha][coluna] = 1;
+            repaint();
+            ganhou();
+            opcao();
+            comeca = !comeca;
         } else if (!jogada && matriz[linha][coluna] == 0) {
             matriz[linha][coluna] = 2;
+            repaint();
+            ganhou();
+            opcao();
+            comeca = !comeca;
         }
 
-        comeca = !comeca;
     }
 
     public void vezIa() {
         if (comeca && players == 1) {
-            
+
             comeca = !comeca;
 
             int mat[][] = new int[3][3];
@@ -275,7 +285,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        vezIa();
+
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

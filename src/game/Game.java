@@ -30,6 +30,13 @@ public class Game {
         frame.add(game);
         frame.addMouseListener(game);
         frame.addMouseMotionListener(game);
+        
+        while(true){
+            if(game.players == 1){
+
+                game.vezIa();
+            }
+        }
     }
 
 }
