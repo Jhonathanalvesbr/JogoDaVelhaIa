@@ -17,20 +17,21 @@ public class Arvore {
     private int pos;
     private boolean vitoria;
     public int movimento;
-    public int mov = 0;
     
+
     public Arvore(int game[][]) {
         for (int x = 0; x < 9; x++) {
             this.game[x / 3][x % 3] = game[x / 3][x % 3];
         }
         int count = 0;
-            for (int x = 0; x < 9; x++) {
-            if(game[x / 3][x % 3] == 0){
+        for (int x = 0; x < 9; x++) {
+            if (game[x / 3][x % 3] == 0) {
                 count++;
             }
         }
-            if(qntNo > count)
-                qntNo = count;
+        if (qntNo > count) {
+            qntNo = count;
+        }
     }
 
     public Arvore geraArvore(Arvore no) {
@@ -39,7 +40,7 @@ public class Arvore {
             verificaJogada(no);
             return no;
         } else {
-            
+
             for (int i = 0; i < qntNo; i++) {
                 Arvore novoFilho = new Arvore(no.game);
                 alteraJogador(no, novoFilho);
@@ -77,7 +78,7 @@ public class Arvore {
     }
 
     public void vitoria(Arvore no) {
-        
+
         if (no.altura < qntAltura) {
             if (no.altura == 1 && no.valor == 1) {
                 movimento = no.pos;
@@ -154,17 +155,15 @@ public class Arvore {
         //System.out.println("");
         //System.out.println(g.letra);
         /*g.mov1(g);
-        if (g.mov == -3) {
-            g.mov2(g);
-        }
-        System.out.println("Mov: " + g.mov);
-//        g.game[g.mov / 3][g.mov % 3] = 1;
-        //System.out.println("ggg");
-
-        //System.out.println(g.mov);
-        g.imprime(g.game);
-
-        /*int m = g.movimento;
+         if (g.mov == -3) {
+         g.mov2(g);
+         }
+         System.out.println("Mov: " + g.mov);
+         //        g.game[g.mov / 3][g.mov % 3] = 1;
+         //System.out.println("ggg");
+         //System.out.println(g.mov);
+         g.imprime(g.game);
+         /*int m = g.movimento;
          /*
          System.out.println(m);
          g.game[m/3][m%3] = 2;
@@ -175,51 +174,49 @@ public class Arvore {
          g.game[m/3][m%3] = 2;
          System.out.println(g.movimento);*/
     // g.imprime(g.game);
-    //System.out.println("-----------------");
-    //g.exibe(g);
+        //System.out.println("-----------------");
+        //g.exibe(g);
     /* for (int i = 0; i < 10; i++) {
          int j = in.nextInt();
          System.out.println(j);
          }*/
- /*System.out.println("");
-        System.out.println("-------");
-        System.out.println("");
-        g.jogador = 2;*/
+        /*System.out.println("");
+         System.out.println("-------");
+         System.out.println("");
+         g.jogador = 2;*/
     //g.mov = 0;
     /*int j;
-        for (int i = 0; i < 9; i++) {
-            g.game[i / 3][i % 3] = 0;
-        }
-        int vez = 1;
-        for (int x = 0; x < 18; x++) {
-            g.imprime(jogo);
-            if (vez == 1) {
-                j = in.nextInt();
-
-                vez = 2;
-                jogo[(j - 1) / 3][(j - 1) % 3] = 2;
-            } else if (vez == 2) {
-                vez = 1;
-                g = new Arvore(jogo);
-                g.c = 'A';
-                g.t = g.c;
-                g.jogador = 2;
-                g.geraArvore(g);
-                g.movimento = -1;
-                g.vitoria(g);
-
-                if (g.movimento == -1) {
-                    g.empate(g);
-                }
-                if (g.movimento == -1) {
-                    g.derrota(g);
-                }
-                System.out.println(g.movimento);
-                jogo[g.movimento / 3][g.movimento % 3] = 1;
-
-            }
-        }*/
+         for (int i = 0; i < 9; i++) {
+         g.game[i / 3][i % 3] = 0;
+         }
+         int vez = 1;
+         for (int x = 0; x < 18; x++) {
+         g.imprime(jogo);
+         if (vez == 1) {
+         j = in.nextInt();
+         vez = 2;
+         jogo[(j - 1) / 3][(j - 1) % 3] = 2;
+         } else if (vez == 2) {
+         vez = 1;
+         g = new Arvore(jogo);
+         g.c = 'A';
+         g.t = g.c;
+         g.jogador = 2;
+         g.geraArvore(g);
+         g.movimento = -1;
+         g.vitoria(g);
+         if (g.movimento == -1) {
+         g.empate(g);
+         }
+         if (g.movimento == -1) {
+         g.derrota(g);
+         }
+         System.out.println(g.movimento);
+         jogo[g.movimento / 3][g.movimento % 3] = 1;
+         }
+         }*/
     }
+
     private void minimax(Arvore no) {
         if (no.jogador == 1) {
             int size = no.filho.size();
