@@ -5,6 +5,8 @@
  */
 package game;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -29,5 +31,5 @@ public class Game {
         frame.addMouseListener(game);
         frame.addMouseMotionListener(game);
     }
-    
+
 }

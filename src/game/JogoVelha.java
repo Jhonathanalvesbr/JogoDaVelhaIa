@@ -21,13 +21,11 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia;
-    private int players = 1;
+    int players = 1;
     private boolean jogada = true;
-    private boolean playerIa = true;
-    private boolean go = false;
-    boolean temp = false;
+    boolean comeca = true;
 
-    public JogoVelha() {
+    JogoVelha() {
         v2 = v1 = 0;
         for (int i = 0; i < 4; i++) {
             linhaWin[i] = -1;
@@ -52,7 +50,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         g.setColor(Color.red);
         g.drawString("Jogador 2: " + v2, 310, 10);
         g.setColor(Color.black);
-        System.out.println("sssss");
+
         g.setFont(fonte);
         g.drawLine(0, 133, 400, 133);
         g.drawLine(0, 266, 400, 266);
@@ -60,20 +58,6 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         g.setColor(Color.BLACK);
         g.drawLine(133, 0, 133, 400);
         g.drawLine(266, 0, 266, 400);
-
-        if (vitoria == 0) {
-            if (go) {
-                vezIa();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JogoVelha.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                ganhou();
-                go = !go;
-                repaint();
-            }
-        }
 
         g.setColor(Color.RED);
         if (linhaWin[0] == 0) {
@@ -105,17 +89,6 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
                 }
             }
         }
-
-        if (players == 1) {
-            if (!playerIa && vitoria == 0) {
-                go = !go;
-                playerIa = !playerIa;
-                repaint();
-            }
-        }
-        if (temp) {
-            temp = !temp;
-        }
     }
 
     @Override
@@ -124,15 +97,13 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         int coluna = e.getX() / 133;
         if (players == 2) {
             multiplayer(linha, coluna);
-
         }
         if (players == 1) {
             solo(linha, coluna);
         }
-        opcao();
-        temp = !temp;
         repaint();
         ganhou();
+        opcao();
     }
 
     public void opcao() {
@@ -154,7 +125,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
-    private void limpa() {
+    public void limpa() {
         for (int linha = 0; linha < 3; linha++) {
             for (int col = 0; col < 3; col++) {
                 matriz[linha][col] = 0;
@@ -164,10 +135,11 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             linhaWin[i] = -1;
         }
         jogada = !jogada;
+        vitoria = 0;
         repaint();
     }
 
-    private void ganhou() {
+    public void ganhou() {
         boolean verifica = false;
         for (int linha = 0; linha < 3; linha++) {
             if (matriz[linha][0] != 0 && matriz[linha][0] == matriz[linha][1] && matriz[linha][0] == matriz[linha][2]) {
@@ -203,7 +175,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         }
         if (vitoria == 1) {
             v1++;
-        } else if (vitoria == 2) {
+        } else if (vitoria == 2 && jogada) {
             v2++;
         } else if (vitoria == 3) {
             v3++;
@@ -217,43 +189,60 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         } else if (!jogada && matriz[linha][coluna] == 0) {
             matriz[linha][coluna] = 2;
         }
-        playerIa = !playerIa;
+
+        comeca = !comeca;
+        //vezIa();
+
     }
 
     public void vezIa() {
-        int mat[][] = new int[3][3];
-        if (!jogada) {
-            for (int i = 0; i < 9; i++) {
-                if (matriz[i / 3][i % 3] == 1) {
-                    mat[i / 3][i % 3] = 2;
-                } else if (matriz[i / 3][i % 3] == 2) {
-                    mat[i / 3][i % 3] = 1;
+        if (!comeca && players == 1) {
+
+            comeca = !comeca;
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JogoVelha.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            int mat[][] = new int[3][3];
+            if (jogada) {
+                for (int i = 0; i < 9; i++) {
+                    if (matriz[i / 3][i % 3] == 1) {
+                        mat[i / 3][i % 3] = 2;
+                    } else if (matriz[i / 3][i % 3] == 2) {
+                        mat[i / 3][i % 3] = 1;
+                    } else {
+                        mat[i / 3][i % 3] = 0;
+                    }
+                }
+                ia = new Arvore(mat);
+            } else {
+                ia = new Arvore(matriz);
+            }
+            ia.c = 'A';
+            ia.t = ia.c;
+            ia.jogador = 2;
+            ia.geraArvore(ia);
+            ia.movimento = -1;
+            ia.vitoria(ia);
+            if (ia.movimento == -1) {
+                ia.empate(ia);
+            }
+            if (ia.movimento == -1) {
+                ia.derrota(ia);
+            }
+            if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
+                if (!jogada) {
+                    matriz[ia.movimento / 3][ia.movimento % 3] = 1;
                 } else {
-                    mat[i / 3][i % 3] = 0;
+                    matriz[ia.movimento / 3][ia.movimento % 3] = 2;
                 }
             }
-            ia = new Arvore(mat);
-        } else {
-            ia = new Arvore(matriz);
-        }
-        ia.c = 'A';
-        ia.t = ia.c;
-        ia.jogador = 2;
-        ia.geraArvore(ia);
-        ia.movimento = -1;
-        ia.vitoria(ia);
-        if (ia.movimento == -1) {
-            ia.empate(ia);
-        }
-        if (ia.movimento == -1) {
-            ia.derrota(ia);
-        }
-        if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
-            if (!jogada) {
-                matriz[ia.movimento / 3][ia.movimento % 3] = 1;
-            } else {
-                matriz[ia.movimento / 3][ia.movimento % 3] = 2;
-            }
+            repaint();
+            ganhou();
+            opcao();
         }
     }
 
@@ -289,17 +278,13 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (!temp && vitoria != 0) {
-            opcao();
-            vitoria = 0;
-        }
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        vezIa();
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
