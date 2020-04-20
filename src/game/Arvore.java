@@ -7,7 +7,7 @@ public class Arvore {
 
     private int altura;
     int qntAltura = 6;
-    int qntNo = 7;
+    int qntNo = 4;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
@@ -17,7 +17,7 @@ public class Arvore {
     private int pos;
     private boolean vitoria;
     public int movimento;
-    
+    private int melhorAltura;
 
     public Arvore(int game[][]) {
         for (int x = 0; x < 9; x++) {
@@ -127,8 +127,8 @@ public class Arvore {
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
         } //ia = 1; player =2;
-        g.game[0][0] = 0;
-        g.game[0][1] = 2;
+        g.game[0][0] = 1;
+        g.game[0][1] = 0;
         g.game[0][2] = 2;
         g.game[1][0] = 1;
         g.game[1][1] = 0;
@@ -218,7 +218,7 @@ public class Arvore {
     }
 
     private void minimax(Arvore no) {
-        if (no.jogador == 1) {
+        if (no.filho.get(0).jogador == 1) {
             int size = no.filho.size();
             int menor = no.filho.get(0).valor;
             for (int j = 0; j < size; j++) {
