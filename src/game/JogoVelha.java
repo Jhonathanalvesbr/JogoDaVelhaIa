@@ -1,402 +1,377 @@
 package game;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class JogoVelha extends JPanel implements MouseListener, MouseMotionListener {
+public class Arvore {
 
-    private Font fonte = new Font("Consolas", Font.BOLD, 20);
-    private Font fontePequena = new Font("Consolas", Font.BOLD, 10);
-    private Font fonteMedia = new Font("Consolas", Font.BOLD, 13);
-    private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
-    private int linhaWin[] = new int[4];
-    private Arvore ia, ia2;
-    private int qntNo = 1, qntAltura = 2, qntNo2 = 4, qntAltura2 = 2;
-    private int delay = 1500;
-    int players = 1;
-    private boolean jogada = true;
-    boolean comeca = true;
-    private int ganhou = 0;
+    private int altura;
+    int qntAltura = 5;
+    int qntNo = 3;
+    private ArrayList<Arvore> filho = new ArrayList();
+    private int game[][] = new int[3][3];
+    public int jogador;
+    public char c;
+    public char t;
+    private int valor;
+    private int pos;
+    private boolean vitoria;
+    public int movimento;
+    
 
-    JogoVelha() {
-        v2 = v1 = 0;
-        for (int i = 0; i < 4; i++) {
-            linhaWin[i] = -1;
+    public Arvore(int game[][]) {
+        for (int x = 0; x < 9; x++) {
+            this.game[x / 3][x % 3] = game[x / 3][x % 3];
+        }
+        int count = 0;
+        for (int x = 0; x < 9; x++) {
+            if (game[x / 3][x % 3] == 0) {
+                count++;
+            }
+        }
+        if (qntNo > count) {
+            qntNo = count;
         }
     }
 
-    @Override
-    public void paintComponent(Graphics g2) {
-        Graphics2D g = (Graphics2D) g2.create();
+    public Arvore geraArvore(Arvore no) {
+        Arvore aux;
+        if (no.altura >= qntAltura) {
+            verificaJogada(no);
+            return no;
+        } else {
 
-        g.setStroke(new BasicStroke(3));
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 400, 400);
-        g.setFont(fontePequena);
-        g.setColor(Color.blue);
+            for (int i = 0; i < qntNo; i++) {
+                Arvore novoFilho = new Arvore(no.game);
+                alteraJogador(no, novoFilho);
+                movimenta(no, novoFilho);
+                novoFilho.altura = no.altura + 1;
+                no.filho.add(novoFilho);
+                verificaJogada(novoFilho);
+                minimax(no);
+                if (novoFilho.vitoria == true) {
+                    return novoFilho;
+                }
+                aux = geraArvore(novoFilho);
+                no.t = aux.t;
 
-        g.drawString("Jogador 1: " + v1, 10, 10);
-        g.setColor(Color.black);
-        g.setFont(fonteMedia);
-        g.drawString("Vitorias", 175, 13);
-        g.setFont(fontePequena);
-        g.drawString("Empate: " + v3, 174, 25);
-        g.setColor(Color.red);
-        g.drawString("Jogador 2: " + v2, 310, 10);
-        g.setColor(Color.black);
+            }
 
-        g.setFont(fonte);
-        g.drawLine(0, 133, 400, 133);
-        g.drawLine(0, 266, 400, 266);
-        g.drawLine(0, 266, 400, 266);
-        g.setColor(Color.BLACK);
-        g.drawLine(133, 0, 133, 400);
-        g.drawLine(266, 0, 266, 400);
-
-        g.setColor(Color.RED);
-        if (linhaWin[0] == 0) {
-            g.drawLine(0, 66, 400, 66);
-        } else if (linhaWin[0] == 1) {
-            g.drawLine(0, 199, 400, 199);
-        } else if (linhaWin[0] == 2) {
-            g.drawLine(0, 332, 400, 332);
-        } else if (linhaWin[1] == 0) {
-            g.drawLine(66, 0, 66, 400);
-        } else if (linhaWin[1] == 1) {
-            g.drawLine(199, 0, 199, 400);
-        } else if (linhaWin[1] == 2) {
-            g.drawLine(332, 0, 332, 400);
-        } else if (linhaWin[2] == 0) {
-            g.drawLine(0, 0, 400, 400);
-        } else if (linhaWin[2] == 1) {
-            g.drawLine(380, 0, 0, 380);
+            return no;
         }
 
-        for (int linha = 0; linha < 3; linha++) {
-            for (int col = 0; col < 3; col++) {
-                if (matriz[linha][col] == 1) {
-                    g.setColor(Color.blue);
-                    g.drawString("X", 50 + col * 133, 75 + linha * 133);
-                } else if (matriz[linha][col] == 2) {
-                    g.setColor(Color.red);
-                    g.drawString("O", 50 + col * 133, 75 + linha * 133);
+    }
+
+    public void exibe(Arvore no) {
+        if (no.altura < qntAltura) {
+            for (int i = 0; i < no.filho.size(); i++) {
+                exibe(no.filho.get(i));
+            }
+        }
+        System.out.println("Altura: " + no.altura + ": " + no.c + " Valor: " + no.valor + " Jogada: " + no.pos);
+
+        for (int x = 0; x < 9; x++) {
+            System.out.print(no.game[x / 3][x % 3]);
+        }
+        System.out.println("");
+        imprime(no.game);
+    }
+
+    public void vitoria(Arvore no) {
+
+        if (no.altura < qntAltura) {
+            if (no.altura == 1 && no.valor == 1) {
+                movimento = no.pos;
+                //return;
+            }
+            for (int i = 0; i < no.filho.size(); i++) {
+                vitoria(no.filho.get(i));
+            }
+        }
+    }
+
+    public void empate(Arvore no) {
+        if (no.altura < qntAltura) {
+            if (no.altura == 1 && no.valor == 0) {
+                movimento = no.pos;
+                return;
+            }
+            for (int i = 0; i < no.filho.size(); i++) {
+                empate(no.filho.get(i));
+            }
+        }
+    }
+
+    public void derrota(Arvore no) {
+        if (no.altura < qntAltura) {
+            if (no.altura == 1 && no.valor == -1) {
+                movimento = no.pos;
+                return;
+            }
+            for (int i = 0; i < no.filho.size(); i++) {
+                derrota(no.filho.get(i));
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int jogo[][] = new int[3][3];
+        for (int x = 0; x < 9; x++) {
+            jogo[x / 3][x % 3] = 0;
+        }
+
+        Scanner in = new Scanner(System.in);
+
+        Arvore g = new Arvore(jogo);
+
+        for (int x = 0; x < 9; x++) {
+            g.game[x / 3][x % 3] = 0;
+        } //ia = 1; player =2;
+        g.game[0][0] = 0;
+        g.game[0][1] = 1;
+        g.game[0][2] = 2;
+        g.game[1][0] = 0;
+        g.game[1][1] = 0;
+        g.game[1][2] = 0;
+        g.game[2][0] = 0;
+        g.game[2][1] = 0;
+        g.game[2][2] = 0;
+
+        g.imprime(g.game);
+        g.c = 'A';
+        g.t = g.c;
+        g.jogador = 2;
+        g.geraArvore(g);
+        g.exibe(g);
+        g.movimento = -1;
+        g.vitoria(g);
+        if (g.movimento == -1) {
+            g.empate(g);
+        }
+        if (g.movimento == -1) {
+            g.derrota(g);
+        }
+        System.out.println("Posi: " + g.movimento);
+        //System.out.println("");
+        //System.out.println(g.letra);
+        /*g.mov1(g);
+         if (g.mov == -3) {
+         g.mov2(g);
+         }
+         System.out.println("Mov: " + g.mov);
+         //        g.game[g.mov / 3][g.mov % 3] = 1;
+         //System.out.println("ggg");
+         //System.out.println(g.mov);
+         g.imprime(g.game);
+         /*int m = g.movimento;
+         /*
+         System.out.println(m);
+         g.game[m/3][m%3] = 2;
+         g.imprime(g.game);
+        
+         /* g.game[0][1]=1;
+         System.out.println(m);
+         g.game[m/3][m%3] = 2;
+         System.out.println(g.movimento);*/
+    // g.imprime(g.game);
+        //System.out.println("-----------------");
+        //g.exibe(g);
+    /* for (int i = 0; i < 10; i++) {
+         int j = in.nextInt();
+         System.out.println(j);
+         }*/
+        /*System.out.println("");
+         System.out.println("-------");
+         System.out.println("");
+         g.jogador = 2;*/
+    //g.mov = 0;
+    /*int j;
+         for (int i = 0; i < 9; i++) {
+         g.game[i / 3][i % 3] = 0;
+         }
+         int vez = 1;
+         for (int x = 0; x < 18; x++) {
+         g.imprime(jogo);
+         if (vez == 1) {
+         j = in.nextInt();
+         vez = 2;
+         jogo[(j - 1) / 3][(j - 1) % 3] = 2;
+         } else if (vez == 2) {
+         vez = 1;
+         g = new Arvore(jogo);
+         g.c = 'A';
+         g.t = g.c;
+         g.jogador = 2;
+         g.geraArvore(g);
+         g.movimento = -1;
+         g.vitoria(g);
+         if (g.movimento == -1) {
+         g.empate(g);
+         }
+         if (g.movimento == -1) {
+         g.derrota(g);
+         }
+         System.out.println(g.movimento);
+         jogo[g.movimento / 3][g.movimento % 3] = 1;
+         }
+         }*/
+    }
+
+    private void minimax(Arvore no) {
+        if (no.jogador == 1) {
+            int size = no.filho.size();
+            int menor = no.filho.get(0).valor;
+            for (int j = 0; j < size; j++) {
+                if (menor > no.filho.get(j).valor) {
+                    menor = no.filho.get(j).valor;
                 }
             }
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        int linha = e.getY() / 133;
-        int coluna = e.getX() / 133;
-        if (players == 2) {
-            multiplayer(linha, coluna);
-            repaint();
-            ganhou();
-            opcao();
-        }
-        if (players == 1) {
-            solo(linha, coluna);
-        }
-    }
-
-    public void opcao() {
-        if (vitoria == 3) {
-            int opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
-            if (opcao == 0) {
-                limpa();
-            }
-        }
-        if (players == 1 || players == 0) {
-            if (ganhou % 2 != 0) {
-                if (vitoria == 1) {
-                    int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador 2" + " ganhou!!\nDeseja jogar novamente?");
-                    if (opcao == 0) {
-                        limpa();
-                    }
-                } else if (vitoria == 2) {
-                    int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador 1" + " ganhou!!\nDeseja jogar novamente?");
-                    if (opcao == 0) {
-                        limpa();
-                    }
-                }
-            } else {
-                if (vitoria == 2) {
-                    int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + vitoria + " ganhou!!\nDeseja jogar novamente?");
-                    if (opcao == 0) {
-                        limpa();
-                    }
-                } else if (vitoria == 1) {
-                    int opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador " + vitoria + " ganhou!!\nDeseja jogar novamente?");
-                    if (opcao == 0) {
-                        limpa();
-                    }
+            no.filho.get(0).valor = menor;
+        } else {
+            int size = no.filho.size();
+            int maior = no.filho.get(0).valor;
+            for (int j = 0; j < size; j++) {
+                if (maior < no.filho.get(j).valor) {
+                    maior = no.filho.get(j).valor;
                 }
             }
+            no.filho.get(0).valor = maior;
         }
     }
 
-    public void limpa() {
-        for (int linha = 0; linha < 3; linha++) {
-            for (int col = 0; col < 3; col++) {
-                matriz[linha][col] = 0;
+    public int contaPosicoesVazias(int game[][]) {
+        int qtd = 0;
+        for (int x = 0; x < 9; x++) {
+            if (game[x / 3][x % 3] == 0) {
+                qtd++;
             }
         }
-        for (int i = 0; i < 4; i++) {
-            linhaWin[i] = -1;
-        }
-        jogada = !jogada;
-        vitoria = 0;
-        ganhou++;
-        repaint();
+        return qtd;
     }
 
-    public void ganhou() {
-        boolean verifica = false;
-        for (int linha = 0; linha < 3; linha++) {
-            if (matriz[linha][0] != 0 && matriz[linha][0] == matriz[linha][1] && matriz[linha][0] == matriz[linha][2]) {
-                linhaWin[0] = linha;
-                vitoria = matriz[linha][0];
-                verifica = true;
-                break;
+    public void imprime(int jogo[][]) {
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                System.out.print(jogo[j][k]);
             }
-            if (matriz[0][linha] != 0 && matriz[0][linha] == matriz[1][linha] && matriz[0][linha] == matriz[2][linha]) {
-                linhaWin[1] = linha;
-                vitoria = matriz[0][linha];
-                verifica = true;
-                break;
-            }
+            System.out.println("");
         }
-        if (!verifica) {
-            if (matriz[0][0] != 0 && matriz[0][0] == matriz[1][1] && matriz[0][0] == matriz[2][2]) {
-                linhaWin[2] = 0;
-                vitoria = matriz[0][0];
-            } else if (matriz[0][2] != 0 && matriz[0][2] == matriz[1][1] && matriz[0][2] == matriz[2][0]) {
-                linhaWin[2] = 1;
-                vitoria = matriz[0][2];
-            } else {
-                int x = 0;
-                while (matriz[x / 3][x % 3] != 0) {
-                    x++;
-                    if (x == 9) {
-                        vitoria = 3;
+    }
+
+    public void alteraJogador(Arvore no, Arvore novoFilho) {
+        if (no.jogador == 1) {
+            novoFilho.jogador = 2;
+        } else {
+            novoFilho.jogador = 1;
+        }
+        novoFilho.c = no.t;
+        novoFilho.c++;
+        no.t++;
+        novoFilho.t = no.t;
+    }
+
+    public void movimenta(Arvore no, Arvore novoFilho) {
+        int size = no.filho.size();
+        if (size > 0) {
+            Arvore aux = no.filho.get(size - 1);
+            boolean existe = false;
+            for (int x = aux.pos; x < 9; x++) {
+                if (aux.game[x / 3][x % 3] == 0) {
+                    novoFilho.game[x / 3][x % 3] = novoFilho.jogador;
+                    if (novoFilho.pos == 0) {
+                        novoFilho.pos = x;
+                        existe = true;
+                    }
+                    break;
+                }
+            }
+            if (!existe) {
+                for (int x = 0; x < 9; x++) {
+                    if (aux.game[x / 3][x % 3] == 0) {
+                        novoFilho.game[x / 3][x % 3] = novoFilho.jogador;
+                        if (novoFilho.pos == 0) {
+                            novoFilho.pos = x;
+                        }
+                        break;
+                    }
+                }
+            }
+        } else {
+            boolean existe = false;
+            for (int x = no.pos; x < 9; x++) {
+                if (no.game[x / 3][x % 3] == 0) {
+                    novoFilho.game[x / 3][x % 3] = novoFilho.jogador;
+                    if (novoFilho.pos == 0) {
+                        novoFilho.pos = x;
+                        existe = true;
+                    }
+                    break;
+                }
+            }
+            if (!existe) {
+                for (int x = 0; x < 9; x++) {
+                    if (no.game[x / 3][x % 3] == 0) {
+                        novoFilho.game[x / 3][x % 3] = novoFilho.jogador;
+                        if (novoFilho.pos == 0) {
+                            novoFilho.pos = x;
+                        }
                         break;
                     }
                 }
             }
         }
-        if (players == 1 || players == 0) {
-            if (ganhou % 2 == 0) {
-                if (vitoria == 1) {
-                    v1++;
-                } else if (vitoria == 2) {
-                    v2++;
-                } else if (vitoria == 3) {
-                    v3++;
-                }
-            } else {
-                if (vitoria == 2) {
-                    v1++;
-                } else if (vitoria == 1) {
-                    v2++;
-                } else if (vitoria == 3) {
-                    v3++;
-                }
+    }
+
+    private boolean verificaJogo(int matriz[][]) {
+        for (int linha = 0; linha < 3; linha++) {
+            if (matriz[linha][0] != 0 && matriz[linha][0] == matriz[linha][1] && matriz[linha][0] == matriz[linha][2]) {
+                return true;
+
             }
+            if (matriz[0][linha] != 0 && matriz[0][linha] == matriz[1][linha] && matriz[0][linha] == matriz[2][linha]) {
+                return true;
+
+            }
+        }
+        if (matriz[0][0] != 0 && matriz[0][0] == matriz[1][1] && matriz[0][0] == matriz[2][2]) {
+            return true;
+
+        } else if (matriz[0][2] != 0 && matriz[0][2] == matriz[1][1] && matriz[0][2] == matriz[2][0]) {
+            return true;
+
         } else {
-            if (vitoria == 1) {
-                v1++;
-            } else if (vitoria == 2) {
-                v2++;
-            } else if (vitoria == 3) {
-                v3++;
-            }
+            return false;
         }
     }
 
-    public void solo(int linha, int coluna) {
-        if (jogada && matriz[linha][coluna] == 0) {
-            matriz[linha][coluna] = 1;
-            repaint();
-            ganhou();
-            opcao();
-            comeca = !comeca;
-        } else if (!jogada && matriz[linha][coluna] == 0) {
-            matriz[linha][coluna] = 2;
-            repaint();
-            ganhou();
-            opcao();
-            comeca = !comeca;
-        }
-
-    }
-
-    public void vezIa() {
-        if (comeca && players == 1) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            comeca = !comeca;
-
-            int mat[][] = new int[3][3];
-            if (jogada) {
-                for (int i = 0; i < 9; i++) {
-                    if (matriz[i / 3][i % 3] == 1) {
-                        mat[i / 3][i % 3] = 2;
-                    } else if (matriz[i / 3][i % 3] == 2) {
-                        mat[i / 3][i % 3] = 1;
-                    } else {
-                        mat[i / 3][i % 3] = 0;
-                    }
-                }
-                ia = new Arvore(mat);
+    public void verificaJogada(Arvore no) {
+        //boolean vitoriaIa = vitoriaJogador(no.game); //Jogador=2
+        if (no.jogador == 1) {//Ia
+            if (verificaJogo(no.game)) {
+                no.valor = 1;
+                no.vitoria = true;
             } else {
-                ia = new Arvore(matriz);
-            }
-            ia.qntAltura = qntAltura;
-            ia.qntNo = qntNo;
-
-            ia.c = 'A';
-            ia.t = ia.c;
-            ia.jogador = 2;
-            ia.geraArvore(ia);
-            ia.movimento = -1;
-            ia.vitoria(ia);
-            if (ia.movimento == -1) {
-                ia.empate(ia);
-            }
-            if (ia.movimento == -1) {
-                ia.derrota(ia);
-            }
-            if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
-                if (!jogada) {
-                    matriz[ia.movimento / 3][ia.movimento % 3] = 1;
-                } else {
-                    matriz[ia.movimento / 3][ia.movimento % 3] = 2;
-                }
-            }
-            repaint();
-            ganhou();
-            opcao();
-        } else if (players == 0) {
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            ia = new Arvore(matriz);
-            ia.qntAltura = qntAltura;
-            ia.qntNo = qntNo;
-
-            ia.c = 'A';
-            ia.t = ia.c;
-            ia.jogador = 2;
-            ia.geraArvore(ia);
-            ia.movimento = -1;
-            ia.vitoria(ia);
-            if (ia.movimento == -1) {
-                ia.empate(ia);
-            }
-            if (ia.movimento == -1) {
-                ia.derrota(ia);
-            }
-            matriz[ia.movimento / 3][ia.movimento % 3] = 1;
-            repaint();
-            ganhou();
-            if (vitoria == 0) {
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                int mat[][] = new int[3][3];
-
-                for (int i = 0; i < 9; i++) {
-                    if (matriz[i / 3][i % 3] == 1) {
-                        mat[i / 3][i % 3] = 2;
-                    } else if (matriz[i / 3][i % 3] == 2) {
-                        mat[i / 3][i % 3] = 1;
-                    } else {
-                        mat[i / 3][i % 3] = 0;
+                for (int x = 0; x < 9; x++) {
+                    if (no.game[x / 3][x % 3] == 0) {
+                        return;
                     }
                 }
-                ia2 = new Arvore(mat);
-                ia2.qntAltura = qntAltura2;
-                ia2.qntNo = qntNo2;
-
-                ia2.c = 'A';
-                ia2.t = ia2.c;
-                ia2.jogador = 2;
-                ia2.geraArvore(ia2);
-                ia2.movimento = -1;
-                ia2.vitoria(ia2);
-                if (ia2.movimento == -1) {
-                    ia2.empate(ia2);
-                }
-                if (ia2.movimento == -1) {
-                    ia2.derrota(ia2);
-                }
-                matriz[ia2.movimento / 3][ia2.movimento % 3] = 2;
-                repaint();
-                ganhou();
+                no.valor = 0;
+                no.vitoria = true;
             }
-            opcao();
+        } else {//Jogador
+            if (verificaJogo(no.game)) {
+                no.valor = -1;
+                no.vitoria = true;
+            } else {
+                for (int x = 0; x < 9; x++) {
+                    if (no.game[x / 3][x % 3] == 0) {
+                        return;
+                    }
+                }
+                no.valor = 0;
+                no.vitoria = true;
+            }
         }
     }
-
-    public void multiplayer(int linha, int coluna) {
-        if (jogada && matriz[linha][coluna] == 0) {
-            matriz[linha][coluna] = 1;
-        } else if (!jogada && matriz[linha][coluna] == 0) {
-            matriz[linha][coluna] = 2;
-        }
-        jogada = !jogada;
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }
