@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    int qntAltura = 5;
+    int qntAltura = 6;
     int qntNo = 3;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
@@ -226,7 +226,7 @@ public class Arvore {
                     menor = no.filho.get(j).valor;
                 }
             }
-            no.filho.get(0).valor = menor;
+            no.valor= menor;
         } else {
             int size = no.filho.size();
             int maior = no.filho.get(0).valor;
@@ -235,7 +235,7 @@ public class Arvore {
                     maior = no.filho.get(j).valor;
                 }
             }
-            no.filho.get(0).valor = maior;
+            no.valor = maior;
         }
     }
 
