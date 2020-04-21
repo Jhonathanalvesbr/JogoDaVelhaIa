@@ -345,25 +345,77 @@ public class Arvore {
     }
 
     private boolean verificaJogo(int matriz[][]) {
+        int jogadaTemporaria;
+        boolean verifica = false;
         for (int linha = 0; linha < 3; linha++) {
-            if (matriz[linha][0] != 0 && matriz[linha][0] == matriz[linha][1] && matriz[linha][0] == matriz[linha][2]) {
-                return true;
-
-            }
-            if (matriz[0][linha] != 0 && matriz[0][linha] == matriz[1][linha] && matriz[0][linha] == matriz[2][linha]) {
-                return true;
-
+            int col = 0;
+            jogadaTemporaria = matriz[linha][col];
+            for (col = 1; col < matriz.length; col++) {
+                if (jogadaTemporaria == matriz[linha][col] && jogadaTemporaria != 0) {
+                    jogadaTemporaria = matriz[linha][col];
+                } else {
+                    verifica = !verifica;
+                    break;
+                }
             }
         }
-        if (matriz[0][0] != 0 && matriz[0][0] == matriz[1][1] && matriz[0][0] == matriz[2][2]) {
+        if (!verifica) {
             return true;
-
-        } else if (matriz[0][2] != 0 && matriz[0][2] == matriz[1][1] && matriz[0][2] == matriz[2][0]) {
-            return true;
-
-        } else {
-            return false;
         }
+
+        jogadaTemporaria = 0;
+        verifica = false;
+        for (int linha = 0; linha < 3; linha++) {
+            int col = 0;
+            jogadaTemporaria = matriz[linha][col];
+            for (col = 1; col < matriz.length; col++) {
+                if (jogadaTemporaria == matriz[col][linha] && jogadaTemporaria != 0) {
+                    jogadaTemporaria = matriz[col][linha];
+                } else {
+                    verifica = !verifica;
+                    break;
+                }
+            }
+        }
+        if (!verifica) {
+            return true;
+        }
+
+        jogadaTemporaria = 0;
+        verifica = false;
+        int col = 1;
+        jogadaTemporaria = matriz[0][0];
+        for (int linha = 1; linha < matriz.length; linha++) {
+            if (jogadaTemporaria == matriz[linha][col] && jogadaTemporaria != 0) {
+                jogadaTemporaria = matriz[linha][col];
+            } else {
+                verifica = !verifica;
+                break;
+            }
+            col++;
+        }
+        if (!verifica) {
+            return true;
+        }
+
+        jogadaTemporaria = 0;
+        verifica = false;
+        col = 0;
+        jogadaTemporaria = matriz[0][matriz.length - 1];
+        for (int linha = matriz.length - 1; linha >= 0; linha--) {
+            if (jogadaTemporaria == matriz[linha][col] && jogadaTemporaria != 0) {
+                jogadaTemporaria = matriz[linha][col];
+            } else {
+                verifica = !verifica;
+                break;
+            }
+            col++;
+        }
+        if (!verifica) {
+            return true;
+        }
+
+        return false;
     }
 
     public void verificaJogada(Arvore no) {
