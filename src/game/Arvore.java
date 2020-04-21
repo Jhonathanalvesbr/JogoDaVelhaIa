@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    int qntAltura = 6;
-    int qntNo = 4;
+    int qntAltura = 3;
+    int qntNo = 3;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
@@ -36,6 +36,7 @@ public class Arvore {
 
     public Arvore geraArvore(Arvore no) {
         Arvore aux;
+        Arvore al;
         if (no.altura >= qntAltura) {
             verificaJogada(no);
             return no;
@@ -50,6 +51,12 @@ public class Arvore {
                 verificaJogada(novoFilho);
                 minimax(no);
                 if (novoFilho.vitoria == true) {
+                    /*if (novoFilho.valor == 1 && (novoFilho.altura > novoFilho.altura || novoFilho.melhorAltura == 0)) {
+                        novoFilho.melhorAltura = novoFilho.altura;
+                        if (no.melhorAltura == 0 || no.melhorAltura > novoFilho.melhorAltura) {
+                            no.melhorAltura = novoFilho.melhorAltura;
+                        }
+                    }*/
                     return novoFilho;
                 }
                 aux = geraArvore(novoFilho);
@@ -68,7 +75,7 @@ public class Arvore {
                 exibe(no.filho.get(i));
             }
         }
-        System.out.println("Altura: " + no.altura + ": " + no.c + " Valor: " + no.valor + " Jogada: " + no.pos);
+        System.out.println("Melhor: " + no.melhorAltura + " Jogador: " + no.jogador + " Altura: " + no.altura + ": " + no.c + " Valor: " + no.valor + " Jogada: " + no.pos);
 
         for (int x = 0; x < 9; x++) {
             System.out.print(no.game[x / 3][x % 3]);
@@ -130,7 +137,7 @@ public class Arvore {
         g.game[0][0] = 1;
         g.game[0][1] = 0;
         g.game[0][2] = 2;
-        g.game[1][0] = 1;
+        g.game[1][0] = 0;
         g.game[1][1] = 0;
         g.game[1][2] = 0;
         g.game[2][0] = 0;
@@ -173,19 +180,19 @@ public class Arvore {
          System.out.println(m);
          g.game[m/3][m%3] = 2;
          System.out.println(g.movimento);*/
-    // g.imprime(g.game);
+        // g.imprime(g.game);
         //System.out.println("-----------------");
         //g.exibe(g);
-    /* for (int i = 0; i < 10; i++) {
+        /* for (int i = 0; i < 10; i++) {
          int j = in.nextInt();
          System.out.println(j);
          }*/
-        /*System.out.println("");
+ /*System.out.println("");
          System.out.println("-------");
          System.out.println("");
          g.jogador = 2;*/
-    //g.mov = 0;
-    /*int j;
+        //g.mov = 0;
+        /*int j;
          for (int i = 0; i < 9; i++) {
          g.game[i / 3][i % 3] = 0;
          }
@@ -217,7 +224,7 @@ public class Arvore {
          }*/
     }
 
-    private void minimax(Arvore no) {
+        private void minimax(Arvore no) {
         if (no.filho.get(0).jogador == 1) {
             int size = no.filho.size();
             int menor = no.filho.get(0).valor;
