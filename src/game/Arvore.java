@@ -436,18 +436,18 @@ public class Arvore {
         }
 
         verifica = false;
-        jogadaTemporaria = matriz[matriz.length - 1][matriz.length - 1];
+        jogadaTemporaria = matriz[0][matriz.length - 1];
         for (int linha = matriz.length - 1; linha >= 1; linha--) {
-            jogadaTemporaria = matriz[matriz.length - 1 - linha][matriz.length - 1 - linha];
-            if (jogadaTemporaria == matriz[matriz.length - 1 - linha][linha - 1] && jogadaTemporaria != 0) {
-                jogadaTemporaria = matriz[matriz.length - 1 - linha][linha - 1];
+            jogadaTemporaria = matriz[matriz.length - 1 - linha][linha];
+            if (jogadaTemporaria == matriz[matriz.length - 1 - linha][linha] && jogadaTemporaria != 0) {
+                jogadaTemporaria = matriz[matriz.length - 1 - linha][linha];
             } else {
                 verifica = true;
                 break;
             }
-            if (!verifica) {
-                return true;
-            }
+        }
+        if (!verifica) {
+            return true;
         }
         return false;
     }
