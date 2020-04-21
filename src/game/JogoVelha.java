@@ -21,11 +21,11 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia, ia2;
-    private int qntNo = 6, qntAltura = 2, qntNo2 = 6, qntAltura2 = 4;
-    private int delay = 500;
-    int players = 0;
+    private int qntNo = 8, qntAltura = 3, qntNo2 = 6, qntAltura2 = 4;
+    private int delay = 1000;
+    int players = 1;
     private boolean jogada = true;
-    boolean comeca = true;
+    boolean comeca = false;
     private int ganhou = 0;
 
     JogoVelha() {
@@ -115,7 +115,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     }
 
     public int opcao() {
-        int opcao = 10;
+        int opcao = -1;
         if (vitoria == 3) {
             opcao = new JOptionPane().showConfirmDialog(this, "Houve empate!\nDeseja jogar novamente?");
             if (opcao == 0) {
@@ -162,6 +162,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             linhaWin[i] = -1;
         }
         jogada = !jogada;
+
         vitoria = 0;
         ganhou++;
         repaint();
