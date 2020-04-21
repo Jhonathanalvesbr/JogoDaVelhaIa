@@ -21,7 +21,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia, ia2;
-    private int qntNo = 2, qntAltura = 2, qntNo2 = 3, qntAltura2 = 6;
+    private int qntNo = 2, qntAltura = 2, qntNo2 = 3, qntAltura2 = 9;
     private int delay = 500;
     int players = 0;
     private boolean jogada = true;
@@ -291,6 +291,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             }
             repaint();
             ganhou();
+            opcao();
         } else if (players == 0) {
             try {
                 Thread.sleep(delay);
@@ -308,6 +309,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             ia.geraArvore(ia);
             ia.movimento = -1;
             ia.vitoria(ia);
+
             if (ia.movimento == -1) {
                 ia.empate(ia);
             }
@@ -335,7 +337,10 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
                         mat[i / 3][i % 3] = 0;
                     }
                 }
+
                 ia2 = new Arvore(mat);
+                ia2.qntAltura = qntAltura2;
+                ia2.qntNo = qntNo2;
                 ia2.c = 'A';
                 ia2.t = ia2.c;
                 ia2.jogador = 2;
@@ -352,7 +357,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
                 repaint();
                 ganhou();
             }
-            opcao();
+
         }
     }
 
