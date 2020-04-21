@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    int qntAltura = 3;
-    int qntNo = 3;
+    int qntAltura = 2;
+    int qntNo = 8;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
@@ -51,12 +51,6 @@ public class Arvore {
                 verificaJogada(novoFilho);
                 minimax(no);
                 if (novoFilho.vitoria == true) {
-                    /*if (novoFilho.valor == 1 && (novoFilho.altura > novoFilho.altura || novoFilho.melhorAltura == 0)) {
-                        novoFilho.melhorAltura = novoFilho.altura;
-                        if (no.melhorAltura == 0 || no.melhorAltura > novoFilho.melhorAltura) {
-                            no.melhorAltura = novoFilho.melhorAltura;
-                        }
-                    }*/
                     return novoFilho;
                 }
                 aux = geraArvore(novoFilho);
@@ -134,11 +128,11 @@ public class Arvore {
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
         } //ia = 1; player =2;
-        g.game[0][0] = 1;
-        g.game[0][1] = 0;
-        g.game[0][2] = 2;
-        g.game[1][0] = 0;
-        g.game[1][1] = 0;
+        g.game[0][0] = 0;
+        g.game[0][1] = 2;
+        g.game[0][2] = 0;
+        g.game[1][0] = 1;
+        g.game[1][1] = 2;
         g.game[1][2] = 0;
         g.game[2][0] = 0;
         g.game[2][1] = 0;
@@ -225,7 +219,7 @@ public class Arvore {
     }
 
         private void minimax(Arvore no) {
-        if (no.filho.get(0).jogador == 1) {
+        if (no.filho.get(0).jogador == 2) {
             int size = no.filho.size();
             int menor = no.filho.get(0).valor;
             for (int j = 0; j < size; j++) {
