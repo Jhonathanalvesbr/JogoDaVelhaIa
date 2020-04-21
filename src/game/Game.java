@@ -23,6 +23,12 @@ public class Game {
             } else if (game.players == 0) {
                 game.vezIa();
             }
+            if (game.opcao() == 1) {
+                while (game.opcao() == 1) {                    
+                    
+                }
+            }
+            
         }
     }
 
