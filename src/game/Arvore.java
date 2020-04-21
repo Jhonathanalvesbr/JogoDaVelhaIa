@@ -2,14 +2,12 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Arvore {
 
     private int altura;
     int qntAltura = 1;
-    int qntNo = 3;
+    int qntNo = 8;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][];
     public int jogador;
@@ -51,9 +49,9 @@ public class Arvore {
                 no.filho.add(novoFilho);
                 verificaJogada(novoFilho);
                 minimax(no);
-                if (novoFilho.vitoria == true) {
+                /*if (novoFilho.vitoria == true) {
                     return novoFilho;
-                }
+                }*/
                 aux = geraArvore(novoFilho);
                 no.t = aux.t;
 
@@ -82,7 +80,7 @@ public class Arvore {
     public void vitoria(Arvore no) {
         if (no.altura == 1 && no.valor == 1) {
             movimento = no.pos;
-            if (verificaJogo(no.game)) {
+            if (verificaJogo(no.game, no.jogador)) {
                 return;
             }
         }
@@ -101,7 +99,14 @@ public class Arvore {
                 jogo[x / game.length][x % game.length] = no.game[x / game.length][x % game.length];
             }
             jogo[no.pos / jogo.length][no.pos % jogo.length] = 2;
-            if (verificaJogo(jogo)) {
+            int temp;
+            if(no.jogador == 1){
+                temp = 2;
+            }
+            else{
+                temp = 1;
+            }
+            if (verificaJogo(jogo, temp)) {
                 movimento = no.pos;
                 return;
             }
@@ -151,16 +156,16 @@ public class Arvore {
 
         Arvore g = new Arvore(jogo);
 
-        /*for (int x = 0; x < jogo.length * jogo.length; x++) {
+        for (int x = 0; x < jogo.length * jogo.length; x++) {
          g.game[x / jogo.length][x % jogo.length] = 0;
          } //ia = 1; player =2;
          g.game[0][0] = 0;
-         g.game[0][1] = 1;
-         g.game[0][2] = 1;
-         g.game[1][0] = 2;
-         g.game[1][1] = 1;
-         g.game[1][2] = 2;
-         g.game[2][0] = 0;
+         g.game[0][1] = 2;
+         g.game[0][2] = 0;
+         g.game[1][0] = 0;
+         g.game[1][1] = 2;
+         g.game[1][2] = 0;
+         g.game[2][0] = 1;
          g.game[2][1] = 0;
          g.game[2][2] = 0;
 
@@ -183,7 +188,7 @@ public class Arvore {
          }
          System.out.println("Posi: " + g.movimento);//*/
         /////////////////////////////////////////////////
-        for (int x = 0; x < jogo.length * jogo.length; x++) {
+        /*for (int x = 0; x < jogo.length * jogo.length; x++) {
             jogo[x / jogo.length][x % jogo.length] = 0;
         }
         int x = 0;
@@ -374,7 +379,8 @@ public class Arvore {
         }
     }
 
-    private boolean verificaJogo(int matriz[][]) {
+    private boolean verificaJogo(int matriz[][], int jogador) {
+
         int jogadaTemporaria;
         boolean verifica = false;
         int col;
@@ -382,7 +388,7 @@ public class Arvore {
             col = 0;
             jogadaTemporaria = matriz[linha][col];
             for (col = 0; col < matriz.length; col++) {
-                if (jogadaTemporaria == matriz[linha][col] && jogadaTemporaria != 0) {
+                if (jogador == jogadaTemporaria && jogadaTemporaria == matriz[linha][col] && jogadaTemporaria != 0) {
                     jogadaTemporaria = matriz[linha][col];
                 } else {
                     verifica = true;
@@ -405,7 +411,7 @@ public class Arvore {
             col = 0;
             jogadaTemporaria = matriz[col][linha];
             for (col = 0; col < matriz.length; col++) {
-                if (jogadaTemporaria == matriz[col][linha] && jogadaTemporaria != 0) {
+                if (jogador == jogadaTemporaria && jogadaTemporaria == matriz[col][linha] && jogadaTemporaria != 0) {
                     jogadaTemporaria = matriz[col][linha];
                 } else {
                     verifica = true;
@@ -424,7 +430,7 @@ public class Arvore {
         jogadaTemporaria = matriz[0][0];
         for (int linha = 0; linha < matriz.length - 1; linha++) {
             jogadaTemporaria = matriz[linha][linha];
-            if (jogadaTemporaria == matriz[linha + 1][linha + 1] && jogadaTemporaria != 0) {
+            if (jogador == jogadaTemporaria && jogadaTemporaria == matriz[linha + 1][linha + 1] && jogadaTemporaria != 0) {
                 jogadaTemporaria = matriz[linha + 1][linha + 1];
             } else {
                 verifica = true;
@@ -439,7 +445,7 @@ public class Arvore {
         jogadaTemporaria = matriz[0][matriz.length - 1];
         for (int linha = matriz.length - 1; linha >= 0; linha--) {
             jogadaTemporaria = matriz[matriz.length - 1 - linha][linha];
-            if (jogadaTemporaria == matriz[matriz.length - 1 - linha][linha] && jogadaTemporaria != 0) {
+            if (jogador == jogadaTemporaria && jogadaTemporaria == matriz[matriz.length - 1 - linha][linha] && jogadaTemporaria != 0) {
                 jogadaTemporaria = matriz[matriz.length - 1 - linha][linha];
             } else {
                 verifica = true;
@@ -455,7 +461,7 @@ public class Arvore {
     public void verificaJogada(Arvore no) {
         //boolean vitoriaIa = vitoriaJogador(no.game); //Jogador=2
         if (no.jogador == 1) {//Ia
-            if (verificaJogo(no.game)) {
+            if (verificaJogo(no.game, no.jogador)) {
                 no.valor = 1;
                 no.vitoria = true;
             } else {
@@ -468,7 +474,7 @@ public class Arvore {
                 no.vitoria = true;
             }
         } else {//Jogador
-            if (verificaJogo(no.game)) {
+            if (verificaJogo(no.game, no.jogador)) {
                 no.valor = -1;
                 no.vitoria = true;
             } else {
