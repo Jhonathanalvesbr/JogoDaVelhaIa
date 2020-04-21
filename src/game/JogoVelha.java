@@ -7,13 +7,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class JogoVelha extends JPanel implements MouseListener, MouseMotionListener {
+public class JogoVelha extends JPanel implements MouseListener {
 
     private Font fonte = new Font("Consolas", Font.BOLD, 20);
     private Font fontePequena = new Font("Consolas", Font.BOLD, 10);
@@ -21,8 +20,8 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia, ia2;
-    private int qntNo = 8, qntAltura = 3, qntNo2 = 6, qntAltura2 = 4;
-    private int delay = 1000;
+    private int qntNo = 8, qntAltura = 7, qntNo2 = 6, qntAltura2 = 4;
+    private int delay = 500;
     int players = 1;
     private boolean jogada = true;
     boolean comeca = false;
@@ -404,17 +403,6 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void mouseExited(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
