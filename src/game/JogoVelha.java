@@ -21,7 +21,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia, ia2;
-    private int qntNo = 9, qntAltura = 10, qntNo2 = 9, qntAltura2 = 2;
+    private int qntNo = 6, qntAltura = 2, qntNo2 = 6, qntAltura2 = 4;
     private int delay = 500;
     int players = 0;
     private boolean jogada = true;
