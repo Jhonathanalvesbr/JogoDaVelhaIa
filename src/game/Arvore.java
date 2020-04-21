@@ -437,7 +437,7 @@ public class Arvore {
 
         verifica = false;
         jogadaTemporaria = matriz[0][matriz.length - 1];
-        for (int linha = matriz.length - 1; linha >= 1; linha--) {
+        for (int linha = matriz.length - 1; linha >= 0; linha--) {
             jogadaTemporaria = matriz[matriz.length - 1 - linha][linha];
             if (jogadaTemporaria == matriz[matriz.length - 1 - linha][linha] && jogadaTemporaria != 0) {
                 jogadaTemporaria = matriz[matriz.length - 1 - linha][linha];
