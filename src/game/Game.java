@@ -19,7 +19,6 @@ public class Game implements KeyListener, MouseListener {
         game.setBounds(0, 0, 400, 400);
         frame.add(game);
         frame.addMouseListener(game);
-        frame.addMouseMotionListener(game);
         Game g = new Game();
         frame.addKeyListener(g);
         frame.addMouseListener(g);
