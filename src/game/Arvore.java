@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    int qntAltura = 3;
-    int qntNo = 6;
+    public int qntAltura = 3;
+    public int qntNo = 9;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
