@@ -21,7 +21,7 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia, ia2;
-    private int qntNo = 2, qntAltura = 2, qntNo2 = 3, qntAltura2 = 9;
+    private int qntNo = 9, qntAltura = 10, qntNo2 = 9, qntAltura2 = 2;
     private int delay = 500;
     int players = 0;
     private boolean jogada = true;
@@ -32,6 +32,10 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
         v2 = v1 = 0;
         for (int i = 0; i < 4; i++) {
             linhaWin[i] = -1;
+        }
+        for (int i = 0; i < 9; i++) {
+            matriz[i / 3][i % 3] = 0;
+
         }
     }
 
@@ -282,6 +286,9 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             if (ia.movimento == -1) {
                 ia.derrota(ia);
             }
+            if (ia.movimento == -1) {
+                ia.mov(ia);
+            }
             if (matriz[ia.movimento / 3][ia.movimento % 3] == 0) {
                 if (!jogada) {
                     matriz[ia.movimento / 3][ia.movimento % 3] = 1;
@@ -309,12 +316,14 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
             ia.geraArvore(ia);
             ia.movimento = -1;
             ia.vitoria(ia);
-
             if (ia.movimento == -1) {
                 ia.empate(ia);
             }
             if (ia.movimento == -1) {
                 ia.derrota(ia);
+            }
+            if (ia.movimento == -1) {
+                ia.mov(ia);
             }
             matriz[ia.movimento / 3][ia.movimento % 3] = 1;
             repaint();
@@ -341,17 +350,22 @@ public class JogoVelha extends JPanel implements MouseListener, MouseMotionListe
                 ia2 = new Arvore(mat);
                 ia2.qntAltura = qntAltura2;
                 ia2.qntNo = qntNo2;
+
                 ia2.c = 'A';
                 ia2.t = ia2.c;
                 ia2.jogador = 2;
                 ia2.geraArvore(ia2);
                 ia2.movimento = -1;
                 ia2.vitoria(ia2);
+
                 if (ia2.movimento == -1) {
                     ia2.empate(ia2);
                 }
                 if (ia2.movimento == -1) {
                     ia2.derrota(ia2);
+                }
+                if (ia2.movimento == -1) {
+                    ia2.mov(ia2);
                 }
                 matriz[ia2.movimento / 3][ia2.movimento % 3] = 2;
                 repaint();
