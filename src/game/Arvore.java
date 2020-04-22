@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    public int qntAltura = 1;
+    public int qntAltura = 2;
     public int qntNo = 11;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
@@ -18,7 +18,7 @@ public class Arvore {
     private boolean vitoria;
     public int movimento;
     int mov;
-    
+
     public Arvore(int game[][], int jogador) {
         for (int x = 0; x < 9; x++) {
             this.game[x / 3][x % 3] = game[x / 3][x % 3];
@@ -29,8 +29,10 @@ public class Arvore {
 
     public Arvore geraArvore(Arvore no) {
         Arvore aux;
-        if (no.altura >= qntAltura) {
-            verificaJogada(no);
+        if (no.vitoria == true) {
+            return no;
+        }
+        else if (no.altura >= qntAltura) {
             return no;
         } else {
             int count = 0;
@@ -43,16 +45,13 @@ public class Arvore {
                 no.qntNo = count;
             }
             for (int i = 0; i < no.qntNo; i++) {
-                Arvore novoFilho = new Arvore(no.game,no.jogador);
+                Arvore novoFilho = new Arvore(no.game, no.jogador);
                 alteraJogador(no, novoFilho);
                 movimenta(no, novoFilho);
                 novoFilho.altura = no.altura + 1;
                 no.filho.add(novoFilho);
                 verificaJogada(novoFilho);
                 minimax(no);
-                if (novoFilho.vitoria == true) {
-                    return novoFilho;
-                }
                 aux = geraArvore(novoFilho);
                 no.t = aux.t;
             }
@@ -77,7 +76,6 @@ public class Arvore {
     }
 
     public void vitoria(Arvore no) {
-
         if (no.altura < qntAltura) {
             if (no.altura == 1 && no.valor == 1) {
                 movimento = no.pos;
@@ -125,7 +123,6 @@ public class Arvore {
         }
 
     }*/
-
     public static void main(String[] args) {
         int jogo[][] = new int[3][3];
         for (int x = 0; x < 9; x++) {
@@ -134,7 +131,7 @@ public class Arvore {
 
         Scanner in = new Scanner(System.in);
 
-        Arvore g = new Arvore(jogo,1);
+        Arvore g = new Arvore(jogo, 1);
 
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
@@ -162,7 +159,7 @@ public class Arvore {
             g.derrota(g);
         }
         System.out.println("Posi: " + g.movimento);
-        System.out.println("Mov: "+ g.mov);
+        System.out.println("Mov: " + g.mov);
         //System.out.println("");
         //System.out.println(g.letra);
         /*g.mov1(g);

@@ -160,7 +160,7 @@ public class JogoVelha extends JPanel implements MouseListener {
             linhaWin[i] = -1;
         }
         jogada = !jogada;
-
+        
         vitoria = 0;
         ganhou++;
         repaint();
