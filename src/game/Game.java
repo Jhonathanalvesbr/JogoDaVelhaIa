@@ -7,7 +7,9 @@ import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 
 public class Game implements KeyListener, MouseListener {
+
     boolean verifica = false;
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Jogo da Velha");
         frame.setSize(400, 400);
@@ -24,27 +26,24 @@ public class Game implements KeyListener, MouseListener {
         frame.addMouseListener(g);
         int op = -1;
         while (true) {
-            if (game.players == 1) {
+            if (op == -1 && game.players == 1) {
                 game.vezIa();
-                op = game.opcao();
-                if (op == 0) {
-                    op = -1;
-                }
-            } else if (game.players == 0 && op == -1) {
+
+            } else if (op == -1 && game.players == 0 && op == -1) {
                 game.vezIa();
+
+            }
+
+            if (op == -1) {
                 op = game.opcao();
-                if (op == 0) {
-                    op = -1;
+                if(op == 1){
+                    g.verifica = true;
                 }
             }
-            if (op != -1) {
-                while(!g.verifica){
-                    
-                }
-                g.verifica = !g.verifica;
+            if(g.verifica == false){
                 op = game.opcao();
-                if(op == 0){
-                    op = -1;
+                if(op == 1){
+                    g.verifica = true;
                 }
             }
         }
@@ -57,7 +56,9 @@ public class Game implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        verifica = !verifica;
+        if(verifica == true){
+            verifica = false;
+        }
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -73,7 +74,9 @@ public class Game implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        verifica = !verifica;
+        if(verifica == true){
+            verifica = false;
+        }
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

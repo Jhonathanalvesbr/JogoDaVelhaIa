@@ -20,11 +20,11 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia, ia2;
-    private int qntNo = 8, qntAltura = 3, qntNo2 = 6, qntAltura2 = 4;
+    private int qntNo = 8, qntAltura = 6, qntNo2 = 6, qntAltura2 = 4;
     private int delay = 500;
     int players = 1;
-    private boolean jogada = true;
-    boolean comeca = false;
+    private boolean jogada = false;
+    boolean comeca = true;
     private int ganhou = 0;
 
     JogoVelha() {
@@ -244,9 +244,8 @@ public class JogoVelha extends JPanel implements MouseListener {
             opcao();
             comeca = !comeca;
         }
-
     }
-
+    
     public void vezIa() {
         if (comeca && players == 1) {
             try {
@@ -271,8 +270,8 @@ public class JogoVelha extends JPanel implements MouseListener {
             } else {
                 ia = new Arvore(matriz);
             }
-            ia.qntAltura = qntAltura;
-            ia.qntNo = qntNo;
+            ia.qntAltura = 6;
+            ia.qntNo = 8;
 
             ia.c = 'A';
             ia.t = ia.c;
