@@ -26,6 +26,10 @@ public class Game implements KeyListener, MouseListener {
         while (true) {
             if (game.players == 1) {
                 game.vezIa();
+                op = game.opcao();
+                if (op == 0) {
+                    op = -1;
+                }
             } else if (game.players == 0 && op == -1) {
                 game.vezIa();
                 op = game.opcao();

@@ -20,7 +20,7 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia, ia2;
-    private int qntNo = 8, qntAltura = 7, qntNo2 = 6, qntAltura2 = 4;
+    private int qntNo = 8, qntAltura = 3, qntNo2 = 6, qntAltura2 = 4;
     private int delay = 500;
     int players = 1;
     private boolean jogada = true;
@@ -298,7 +298,6 @@ public class JogoVelha extends JPanel implements MouseListener {
             }
             repaint();
             ganhou();
-            opcao();
         } else if (players == 0) {
             try {
                 Thread.sleep(delay);
