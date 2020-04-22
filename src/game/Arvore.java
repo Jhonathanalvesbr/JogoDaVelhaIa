@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    public int qntAltura = 1;
+    public int qntAltura = 2;
     public int qntNo = 11;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
@@ -17,12 +17,12 @@ public class Arvore {
     private int pos;
     private boolean vitoria;
     public int movimento;
-
+    int mov;
+    
     public Arvore(int game[][]) {
         for (int x = 0; x < 9; x++) {
             this.game[x / 3][x % 3] = game[x / 3][x % 3];
         }
-
     }
 
     public Arvore geraArvore(Arvore no) {
@@ -79,7 +79,7 @@ public class Arvore {
         if (no.altura < qntAltura) {
             if (no.altura == 1 && no.valor == 1) {
                 movimento = no.pos;
-                //return;
+                return;
             }
             for (int i = 0; i < no.filho.size(); i++) {
                 vitoria(no.filho.get(i));
@@ -162,6 +162,7 @@ public class Arvore {
             g.derrota(g);
         }
         System.out.println("Posi: " + g.movimento);
+        System.out.println("Mov: "+ g.mov);
         //System.out.println("");
         //System.out.println(g.letra);
         /*g.mov1(g);
@@ -228,13 +229,13 @@ public class Arvore {
     }
 
     private void minimax(Arvore no) {
+        int aux = no.filho.get(0).pos;
         if (no.filho.get(0).jogador == 2) {
             int size = no.filho.size();
             int menor = no.filho.get(0).valor;
             for (int j = 0; j < size; j++) {
                 if (menor > no.filho.get(j).valor) {
                     menor = no.filho.get(j).valor;
-                    pos = no.filho.get(j).movimento;
                 }
             }
             no.valor = menor;
@@ -244,7 +245,6 @@ public class Arvore {
             for (int j = 0; j < size; j++) {
                 if (maior < no.filho.get(j).valor) {
                     maior = no.filho.get(j).valor;
-                    pos = no.filho.get(j).movimento;
                 }
             }
             no.valor = maior;

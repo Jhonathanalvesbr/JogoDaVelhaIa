@@ -24,7 +24,7 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int delay = 500;
     int players = 1;
     private boolean jogada = false;
-    boolean comeca = true;
+    boolean comeca = false;
     private int ganhou = 0;
 
     JogoVelha() {
@@ -120,7 +120,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 limpa();
             }
         }
-        if (players == 1 || players == 0) {
+        else if (players == 1 || players == 0) {
             if (ganhou % 2 != 0) {
                 if (vitoria == 1) {
                     opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador 2" + " ganhou!!\nDeseja jogar novamente?");
