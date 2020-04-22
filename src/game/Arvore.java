@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    public int qntAltura = 2;
+    public int qntAltura = 1;
     public int qntNo = 11;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
@@ -113,7 +113,7 @@ public class Arvore {
         }
     }
 
-    public void mov(Arvore no) {
+    /*public void mov(Arvore no) {
         if (no.altura == 1 && no.valor == 0) {
             movimento = no.pos;
             return;
@@ -124,7 +124,7 @@ public class Arvore {
             }
         }
 
-    }
+    }*/
 
     public static void main(String[] args) {
         int jogo[][] = new int[3][3];
@@ -134,20 +134,20 @@ public class Arvore {
 
         Scanner in = new Scanner(System.in);
 
-        Arvore g = new Arvore(jogo,2);
+        Arvore g = new Arvore(jogo,1);
 
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
         } //ia = 1; player =2;
         g.game[0][0] = 0;
-        g.game[0][1] = 2;
+        g.game[0][1] = 0;
         g.game[0][2] = 2;
-        g.game[1][0] = 1;
-        g.game[1][1] = 0;
-        g.game[1][2] = 0;
+        g.game[1][0] = 0;
+        g.game[1][1] = 2;
+        g.game[1][2] = 2;
         g.game[2][0] = 0;
-        g.game[2][1] = 0;
-        g.game[2][2] = 0;
+        g.game[2][1] = 1;
+        g.game[2][2] = 1;
 
         g.imprime(g.game);
         g.c = 0;
