@@ -254,20 +254,11 @@ public class JogoVelha extends JPanel implements MouseListener {
             }
             comeca = !comeca;
 
-            int mat[][] = new int[3][3];
             if (jogada) {
-                for (int i = 0; i < 9; i++) {
-                    if (matriz[i / 3][i % 3] == 1) {
-                        mat[i / 3][i % 3] = 2;
-                    } else if (matriz[i / 3][i % 3] == 2) {
-                        mat[i / 3][i % 3] = 1;
-                    } else {
-                        mat[i / 3][i % 3] = 0;
-                    }
-                }
-                ia = new Arvore(mat);
+                
+                ia = new Arvore(matriz,2);
             } else {
-                ia = new Arvore(matriz);
+                ia = new Arvore(matriz,1);
             }
             ia.qntAltura = 6;
             ia.qntNo = 8;
@@ -303,7 +294,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            ia = new Arvore(matriz);
+            ia = new Arvore(matriz,2);
             ia.qntAltura = qntAltura;
             ia.qntNo = qntNo;
 
@@ -311,7 +302,6 @@ public class JogoVelha extends JPanel implements MouseListener {
             ia.t = ia.c;
             ia.jogador = 2;
             ia.geraArvore(ia);
-            ia.movimento = -1;
             ia.vitoria(ia);
             if (ia.movimento == -1) {
                 ia.empate(ia);
@@ -332,27 +322,11 @@ public class JogoVelha extends JPanel implements MouseListener {
                     Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                int mat[][] = new int[3][3];
-
-                for (int i = 0; i < 9; i++) {
-                    if (matriz[i / 3][i % 3] == 1) {
-                        mat[i / 3][i % 3] = 2;
-                    } else if (matriz[i / 3][i % 3] == 2) {
-                        mat[i / 3][i % 3] = 1;
-                    } else {
-                        mat[i / 3][i % 3] = 0;
-                    }
-                }
-
-                ia2 = new Arvore(mat);
+                
+                ia2 = new Arvore(matriz,1);
                 ia2.qntAltura = qntAltura2;
                 ia2.qntNo = qntNo2;
-
-                ia2.c = 'A';
-                ia2.t = ia2.c;
-                ia2.jogador = 2;
                 ia2.geraArvore(ia2);
-                ia2.movimento = -1;
                 ia2.vitoria(ia2);
 
                 if (ia2.movimento == -1) {

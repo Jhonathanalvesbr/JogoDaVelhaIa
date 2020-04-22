@@ -19,10 +19,12 @@ public class Arvore {
     public int movimento;
     int mov;
     
-    public Arvore(int game[][]) {
+    public Arvore(int game[][], int jogador) {
         for (int x = 0; x < 9; x++) {
             this.game[x / 3][x % 3] = game[x / 3][x % 3];
         }
+        this.jogador = jogador;
+        movimento = -1;
     }
 
     public Arvore geraArvore(Arvore no) {
@@ -41,7 +43,7 @@ public class Arvore {
                 no.qntNo = count;
             }
             for (int i = 0; i < no.qntNo; i++) {
-                Arvore novoFilho = new Arvore(no.game);
+                Arvore novoFilho = new Arvore(no.game,no.jogador);
                 alteraJogador(no, novoFilho);
                 movimenta(no, novoFilho);
                 novoFilho.altura = no.altura + 1;
@@ -132,7 +134,7 @@ public class Arvore {
 
         Scanner in = new Scanner(System.in);
 
-        Arvore g = new Arvore(jogo);
+        Arvore g = new Arvore(jogo,2);
 
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
@@ -150,10 +152,8 @@ public class Arvore {
         g.imprime(g.game);
         g.c = 0;
         g.t = g.c;
-        g.jogador = 2;
         g.geraArvore(g);
         g.exibe(g);
-        g.movimento = -1;
         g.vitoria(g);
         if (g.movimento == -1) {
             g.empate(g);
