@@ -251,16 +251,6 @@ public class Arvore {
         }
     }
 
-    public int contaPosicoesVazias(int game[][]) {
-        int qtd = 0;
-        for (int x = 0; x < 9; x++) {
-            if (game[x / 3][x % 3] == 0) {
-                qtd++;
-            }
-        }
-        return qtd;
-    }
-
     public void imprime(int jogo[][]) {
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 3; k++) {
