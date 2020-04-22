@@ -106,7 +106,6 @@ public class JogoVelha extends JPanel implements MouseListener {
             multiplayer(linha, coluna);
             repaint();
             ganhou();
-            opcao();
         }
         if (players == 1) {
             solo(linha, coluna);

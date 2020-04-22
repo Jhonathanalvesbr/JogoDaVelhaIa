@@ -6,32 +6,23 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    public int qntAltura = 3;
-    public int qntNo = 9;
+    public int qntAltura = 1;
+    public int qntNo = 11;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
-    public char c;
-    public char t;
+    public int c;
+    public int t;
     private int valor;
     private int pos;
     private boolean vitoria;
     public int movimento;
-    int melhorAltura;
 
     public Arvore(int game[][]) {
         for (int x = 0; x < 9; x++) {
             this.game[x / 3][x % 3] = game[x / 3][x % 3];
         }
-        int count = 0;
-        for (int x = 0; x < 9; x++) {
-            if (game[x / 3][x % 3] == 0) {
-                count++;
-            }
-        }
-        if (qntNo > count) {
-            qntNo = count;
-        }
+
     }
 
     public Arvore geraArvore(Arvore no) {
@@ -40,7 +31,16 @@ public class Arvore {
             verificaJogada(no);
             return no;
         } else {
-            for (int i = 0; i < qntNo; i++) {
+            int count = 0;
+            for (int x = 0; x < 9; x++) {
+                if (game[x / 3][x % 3] == 0) {
+                    count++;
+                }
+            }
+            if (no.qntNo > count) {
+                no.qntNo = count;
+            }
+            for (int i = 0; i < no.qntNo; i++) {
                 Arvore novoFilho = new Arvore(no.game);
                 alteraJogador(no, novoFilho);
                 movimenta(no, novoFilho);
@@ -65,7 +65,7 @@ public class Arvore {
                 exibe(no.filho.get(i));
             }
         }
-        System.out.println("Melhor: " + no.melhorAltura + " Jogador: " + no.jogador + " Altura: " + no.altura + ": " + no.c + " Valor: " + no.valor + " Jogada: " + no.pos);
+        System.out.println("Altura: " + no.altura + ": " + no.c + " Valor: " + no.valor + " Jogada: " + no.pos);
 
         for (int x = 0; x < 9; x++) {
             System.out.print(no.game[x / 3][x % 3]);
@@ -148,7 +148,7 @@ public class Arvore {
         g.game[2][2] = 0;
 
         g.imprime(g.game);
-        g.c = 'A';
+        g.c = 0;
         g.t = g.c;
         g.jogador = 2;
         g.geraArvore(g);
@@ -162,7 +162,6 @@ public class Arvore {
             g.derrota(g);
         }
         System.out.println("Posi: " + g.movimento);
-        System.out.println("Melhor: "+g.melhorAltura);
         //System.out.println("");
         //System.out.println(g.letra);
         /*g.mov1(g);

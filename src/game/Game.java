@@ -36,13 +36,13 @@ public class Game implements KeyListener, MouseListener {
 
             if (op == -1) {
                 op = game.opcao();
-                if(op == 1){
+                if(op == 1 || op == 2){
                     g.verifica = true;
                 }
             }
-            if(g.verifica == false){
+            else if(g.verifica == false){
                 op = game.opcao();
-                if(op == 1){
+                if(op == 1 || op == 2){
                     g.verifica = true;
                 }
             }
