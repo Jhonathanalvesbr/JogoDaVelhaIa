@@ -20,9 +20,9 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia;
-    private int qntAltura = 6, qntNo = 8, qntAltura2 = 7, qntNo2 = 8;
+    private int qntNo = 4, qntAltura = 3, qntNo2 = 3, qntAltura2 = 7;
     private int delay = 500;
-    int players = 1;
+    int players = 0;
     private boolean jogada = false;
     boolean comeca = false;
     private int ganhou = 0;
@@ -263,9 +263,9 @@ public class JogoVelha extends JPanel implements MouseListener {
                         mat[i / 3][i % 3] = 0;
                     }
                 }
-                ia = new Arvore(mat,2);
+                ia = new Arvore(mat, 2);
             } else {
-                ia = new Arvore(matriz,2);
+                ia = new Arvore(matriz, 2);
             }
             ia.qntAltura = qntAltura;
             ia.qntNo = qntNo;
@@ -275,8 +275,8 @@ public class JogoVelha extends JPanel implements MouseListener {
             } else {
                 matriz[ia.jogada(ia) / 3][ia.jogada(ia) % 3] = 2;
             }
-            repaint();
             ganhou();
+            repaint();
         } else if (players == 0) {
             try {
                 Thread.sleep(delay);
@@ -284,7 +284,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            ia = new Arvore(matriz,2);
+            ia = new Arvore(matriz, 2);
             ia.qntAltura = qntAltura;
             ia.qntNo = qntNo;
             ia.geraArvore(ia);
@@ -308,7 +308,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                         mat[i / 3][i % 3] = 0;
                     }
                 }
-                ia = new Arvore(mat,2);
+                ia = new Arvore(mat, 2);
                 ia.qntAltura = qntAltura2;
                 ia.qntNo = qntNo2;
                 ia.geraArvore(ia);
