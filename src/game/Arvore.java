@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Arvore {
 
     private int altura;
-    public int qntAltura = 10;
-    public int qntNo = 11;
+    public int qntAltura = 4;
+    public int qntNo = 6;
     private ArrayList<Arvore> filho = new ArrayList();
     private int game[][] = new int[3][3];
     public int jogador;
@@ -16,25 +16,21 @@ public class Arvore {
     private int valor;
     private int pos;
     private boolean vitoria;
-    public int movimento;
-    int mov;
-    public int ma;
 
-    public Arvore(int game[][], int jogador) {
+
+    public Arvore(int game[][], int jog) {
         for (int x = 0; x < 9; x++) {
             this.game[x / 3][x % 3] = game[x / 3][x % 3];
         }
-        this.jogador = jogador;
-        movimento = -1;
+        jogador = jog;
     }
 
     public Arvore geraArvore(Arvore no) {
         Arvore aux;
         if (no.vitoria == true) {
-            no.ma = no.altura;
+//            no.ma = no.altura;
             return no;
-        }
-        else if (no.altura >= qntAltura) {
+        } else if (no.altura >= qntAltura) {
             return no;
         } else {
             int count = 0;
@@ -55,19 +51,20 @@ public class Arvore {
                 verificaJogada(novoFilho);
                 count = 0;
                 for (int x = 0; x < 9; x++) {
-                if (novoFilho.game[x / 3][x % 3] == 0) {
-                    count++;
+                    if (novoFilho.game[x / 3][x % 3] == 0) {
+                        count++;
+                    }
                 }
                 if(count == 0){
+                     minimax(no);
                     break;
                 }
-            }
                 aux = geraArvore(novoFilho);
                 minimax(no);
-                
+
                 no.t = aux.t;
                 count = 0;
-               
+
             }
             return no;
         }
@@ -89,63 +86,26 @@ public class Arvore {
         imprime(no.game);
     }
 
-    public void vitoria(Arvore no) {
-        if (no.altura < qntAltura) {
-            if (no.altura == 1 && no.valor == 1) {
-                movimento = no.pos;
-                return;
-            }
-            for (int i = 0; i < no.filho.size(); i++) {
-                vitoria(no.filho.get(i));
-            }
-        }
-    }
 
-    public void empate(Arvore no) {
-        if (no.altura < qntAltura) {
-            if (no.altura == 1 && no.valor == 0) {
-                movimento = no.pos;
-                return;
-            }
-            for (int i = 0; i < no.filho.size(); i++) {
-                empate(no.filho.get(i));
-            }
-        }
-    }
-
-    public void derrota(Arvore no) {
-        if (no.altura < qntAltura) {
-            if (no.altura == 1 && no.valor == -1) {
-                movimento = no.pos;
-                return;
-            }
-            for (int i = 0; i < no.filho.size(); i++) {
-                derrota(no.filho.get(i));
-            }
-        }
-    }
-
-    /*public void mov(Arvore no) {
-        if (no.altura == 1 && no.valor == 0) {
-            movimento = no.pos;
-            return;
-        }
-        if (no.altura < qntAltura) {
-            for (int i = 0; i < no.filho.size(); i++) {
-                mov(no.filho.get(i));
-            }
-        }
-
-    }*/
-    
-    public void e(Arvore aux){
+    public int jogada(Arvore aux) {
         Arvore no;
+        int temp = aux.filho.get(0).valor;
+        int pos = aux.filho.get(0).pos;
         for (int i = 0; i < aux.filho.size(); i++) {
             no = aux.filho.get(i);
-            System.out.println(no.ma +" - Altura: " + no.altura + ": " + no.c + " Valor: " + no.valor + " Jogada: " + no.pos);
+            if(temp <= no.valor && pos != -1){
+                temp = no.valor;
+                pos = no.pos;
+                if(verificaJogo(no.game)){
+                    break;
+                }
+            }
+            //System.out.println(no.ma + " - Altura: " + no.altura + ": " + no.c + " Valor: " + no.valor + " Jogada: " + no.pos);
         }
+        //System.out.println("");
+        return pos;
     }
-    
+
     public static void main(String[] args) {
         int jogo[][] = new int[3][3];
         for (int x = 0; x < 9; x++) {
@@ -160,108 +120,35 @@ public class Arvore {
             g.game[x / 3][x % 3] = 0;
         } //ia = 1; player =2;
         g.game[0][0] = 2;
-        g.game[0][1] = 2;
-        g.game[0][2] = 1;
-        g.game[1][0] = 1;
-        g.game[1][1] = 0;
-        g.game[1][2] = 2;
-        g.game[2][0] = 0;
+        g.game[0][1] = 0;
+        g.game[0][2] = 0;
+        g.game[1][0] = 2;
+        g.game[1][1] = 1;
+        g.game[1][2] = 0;
+        g.game[2][0] = 1;
         g.game[2][1] = 0;
-        g.game[2][2] = 1;
+        g.game[2][2] = 2;
 
         g.imprime(g.game);
         g.c = 0;
         g.t = g.c;
         g.geraArvore(g);
         g.exibe(g);
-        g.vitoria(g);
-        if (g.movimento == -1) {
-            g.empate(g);
-        }
-        if (g.movimento == -1) {
-            g.derrota(g);
-        }
-        System.out.println("Posi: " + g.movimento);
-        System.out.println("Mov: " + g.mov);
-        
+
         System.out.println("");
-        System.out.println("");
-        g.e(g);
-        //System.out.println("");
-        //System.out.println(g.letra);
-        /*g.mov1(g);
-         if (g.mov == -3) {
-         g.mov2(g);
-         }
-         System.out.println("Mov: " + g.mov);
-         //        g.game[g.mov / 3][g.mov % 3] = 1;
-         //System.out.println("ggg");
-         //System.out.println(g.mov);
-         g.imprime(g.game);
-         /*int m = g.movimento;
-         /*
-         System.out.println(m);
-         g.game[m/3][m%3] = 2;
-         g.imprime(g.game);
+        System.out.println(g.jogada(g));
         
-         /* g.game[0][1]=1;
-         System.out.println(m);
-         g.game[m/3][m%3] = 2;
-         System.out.println(g.movimento);*/
-        // g.imprime(g.game);
-        //System.out.println("-----------------");
-        //g.exibe(g);
-        /* for (int i = 0; i < 10; i++) {
-         int j = in.nextInt();
-         System.out.println(j);
-         }*/
- /*System.out.println("");
-         System.out.println("-------");
-         System.out.println("");
-         g.jogador = 2;*/
-        //g.mov = 0;
-        /*int j;
-         for (int i = 0; i < 9; i++) {
-         g.game[i / 3][i % 3] = 0;
-         }
-         int vez = 1;
-         for (int x = 0; x < 18; x++) {
-         g.imprime(jogo);
-         if (vez == 1) {
-         j = in.nextInt();
-         vez = 2;
-         jogo[(j - 1) / 3][(j - 1) % 3] = 2;
-         } else if (vez == 2) {
-         vez = 1;
-         g = new Arvore(jogo);
-         g.c = 'A';
-         g.t = g.c;
-         g.jogador = 2;
-         g.geraArvore(g);
-         g.movimento = -1;
-         g.vitoria(g);
-         if (g.movimento == -1) {
-         g.empate(g);
-         }
-         if (g.movimento == -1) {
-         g.derrota(g);
-         }
-         System.out.println(g.movimento);
-         jogo[g.movimento / 3][g.movimento % 3] = 1;
-         }
-         }*/
+        
     }
 
     private void minimax(Arvore no) {
         int aux = no.filho.get(0).pos;
-        //int a = no.filho.get(0).altura;
         if (no.filho.get(0).jogador == 2) {
             int size = no.filho.size();
             int menor = no.filho.get(0).valor;
             for (int j = 0; j < size; j++) {
                 if (menor > no.filho.get(j).valor) {
                     menor = no.filho.get(j).valor;
-                   // a = no.filho.get(j).altura;
                 }
             }
             no.valor = menor;
@@ -271,12 +158,10 @@ public class Arvore {
             for (int j = 0; j < size; j++) {
                 if (maior < no.filho.get(j).valor) {
                     maior = no.filho.get(j).valor;
-                   // a = no.filho.get(j).altura;
                 }
             }
             no.valor = maior;
         }
-       // no.ma = a;
     }
 
     public void imprime(int jogo[][]) {
