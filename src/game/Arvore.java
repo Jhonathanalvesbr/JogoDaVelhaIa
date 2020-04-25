@@ -85,7 +85,7 @@ public class Arvore {
         int valorAux = aux.filho.get(0).valor;
         int posAux = aux.filho.get(0).pos;
         int melhorAltura = 0;
-        int valor = -2;
+        int valor = -1;
         for (int i = 0; i < aux.filho.size(); i++) {
 
             no = aux.filho.get(i);
