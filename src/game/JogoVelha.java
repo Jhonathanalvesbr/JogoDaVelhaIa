@@ -20,9 +20,9 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia;
-    private int qntNo = 3, qntAltura = 5, qntNo2 = 9, qntAltura2 = 9;
+    private int qntNo = 3, qntAltura = 8, qntNo2 = 9, qntAltura2 = 9;
     private int delay = 500;
-    int players = 1;
+    int players = 0;
     private boolean jogada = false;
     boolean quemComeca = true;
     private int ganhou = 0;
@@ -147,6 +147,18 @@ public class JogoVelha extends JPanel implements MouseListener {
                 }
             }
         } else if (players == 0) {
+            if (vitoria == 1) {
+                opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador 1" + " ganhou!!\nDeseja jogar novamente?");
+                if (opcao == 0) {
+                    limpa();
+                }
+            } else if (vitoria == 2) {
+                opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador 2" + " ganhou!!\nDeseja jogar novamente?");
+                if (opcao == 0) {
+                    limpa();
+                }
+            }
+        } else {
             if (vitoria == 1) {
                 opcao = new JOptionPane().showConfirmDialog(this, "Parabéns\nO Jogador 1" + " ganhou!!\nDeseja jogar novamente?");
                 if (opcao == 0) {
