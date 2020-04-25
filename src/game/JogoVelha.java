@@ -24,7 +24,7 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int delay = 500;
     int players = 1;
     private boolean jogada = false;
-    boolean quemComeca = true;
+    boolean quemComeca = false;
     private int ganhou = 0;
     private int movimento = 0;
     
