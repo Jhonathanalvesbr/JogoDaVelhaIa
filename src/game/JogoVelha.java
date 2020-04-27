@@ -14,13 +14,13 @@ import javax.swing.JPanel;
 
 public class JogoVelha extends JPanel implements MouseListener {
 
-    private Font fonte = new Font("Consolas", Font.BOLD, 20);
+    private Font fonte = new Font("Consolas", Font.BOLD, 40);
     private Font fontePequena = new Font("Consolas", Font.BOLD, 10);
     private Font fonteMedia = new Font("Consolas", Font.BOLD, 13);
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia;
-    private int qntNo = 5, qntAltura = 2, qntNo2 = 9, qntAltura2 = 9;
+    private int qntNo = 3, qntAltura = 2, qntNo2 = 9, qntAltura2 = 9;
     private int delay = 1500;
     int players = 1;
     private boolean jogada = false;
@@ -90,10 +90,10 @@ public class JogoVelha extends JPanel implements MouseListener {
             for (int col = 0; col < 3; col++) {
                 if (matriz[linha][col] == 1) {
                     g.setColor(Color.blue);
-                    g.drawString("X", 50 + col * 133, 75 + linha * 133);
+                    g.drawString("X", 45 + col * 133, 80 + linha * 133);
                 } else if (matriz[linha][col] == 2) {
                     g.setColor(Color.red);
-                    g.drawString("O", 50 + col * 133, 75 + linha * 133);
+                    g.drawString("O", 45 + col * 133, 80 + linha * 133);
                 }
             }
         }
