@@ -20,7 +20,7 @@ public class JogoVelha extends JPanel implements MouseListener {
     private int matriz[][] = new int[3][3], v1, v2, v3, vitoria;
     private int linhaWin[] = new int[4];
     private Arvore ia;
-    private int qntNo = 5, qntAltura = 8, qntNo2 = 9, qntAltura2 = 9;
+    private int qntNo = 5, qntAltura = 2, qntNo2 = 9, qntAltura2 = 9;
     private int delay = 500;
     int players = 1;
     private boolean jogada = false;
@@ -296,14 +296,17 @@ public class JogoVelha extends JPanel implements MouseListener {
             ia.qntAltura = qntAltura;
             ia.qntNo = qntNo;
             ia.geraArvore(ia);
+            System.out.println(ia.a);
+
             movimento = ia.jogada(ia);
-            if (!jogada) {
-                matriz[movimento / 3][movimento % 3] = 1;
-            } else {
-                matriz[movimento / 3][movimento % 3] = 2;
+            if (movimento >= 0 && movimento < 9) {
+                if (!jogada) {
+                    matriz[movimento / 3][movimento % 3] = 1;
+                } else {
+                    matriz[movimento / 3][movimento % 3] = 2;
+                }
             }
-            
-            
+
             ganhou();
             repaint();
         } else if (players == 0) {
@@ -320,7 +323,7 @@ public class JogoVelha extends JPanel implements MouseListener {
                 ia.geraArvore(ia);
                 movimento = ia.jogada(ia);
                 matriz[movimento / 3][movimento % 3] = 1;
-                
+
                 ganhou();
                 repaint();
                 if (vitoria == 0) {
@@ -345,8 +348,9 @@ public class JogoVelha extends JPanel implements MouseListener {
                     ia.qntNo = qntNo2;
                     ia.geraArvore(ia);
                     movimento = ia.jogada(ia);
-                    matriz[movimento / 3][movimento % 3] = 2;
-                    
+                    if (movimento >= 0 && movimento < 9) {
+                        matriz[movimento / 3][movimento % 3] = 2;
+                    }
                     ganhou();
                     repaint();
                 }
@@ -374,8 +378,9 @@ public class JogoVelha extends JPanel implements MouseListener {
                     ia.qntNo = qntNo2;
                     ia.geraArvore(ia);
                     movimento = ia.jogada(ia);
-                    matriz[movimento / 3][movimento % 3] = 2;
-                    
+                    if (movimento >= 0 && movimento < 9) {
+                        matriz[movimento / 3][movimento % 3] = 2;
+                    }
                     ganhou();
                     repaint();
                     if (vitoria == 0) {
@@ -390,8 +395,9 @@ public class JogoVelha extends JPanel implements MouseListener {
                         ia.qntNo = qntNo;
                         ia.geraArvore(ia);
                         movimento = ia.jogada(ia);
-                        matriz[movimento / 3][movimento % 3] = 1;
-                        
+                        if (movimento >= 0 && movimento < 9) {
+                            matriz[movimento / 3][movimento % 3] = 1;
+                        }
                         ganhou();
                         repaint();
                     }
