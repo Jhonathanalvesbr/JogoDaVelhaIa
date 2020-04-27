@@ -125,14 +125,14 @@ public class Arvore {
         for (int x = 0; x < 9; x++) {
             g.game[x / 3][x % 3] = 0;
         } //ia = 1; player =2;
-        g.game[0][0] = 1;
+        g.game[0][0] = 2;
         g.game[0][1] = 2;
-        g.game[0][2] = 0;
-        g.game[1][0] = 2;
+        g.game[0][2] = 1;
+        g.game[1][0] = 1;
         g.game[1][1] = 0;
-        g.game[1][2] = 0;
-        g.game[2][0] = 2;
-        g.game[2][1] = 1;
+        g.game[1][2] = 2;
+        g.game[2][0] = 0;
+        g.game[2][1] = 0;
         g.game[2][2] = 1;
 
         g.imprime(g.game);
