@@ -295,18 +295,19 @@ public class JogoVelha extends JPanel implements MouseListener {
             }
             ia.qntAltura = qntAltura;
             ia.qntNo = qntNo;
-            ia.geraArvore(ia);
-            System.out.println(ia.a);
+            if (ia.vazio(matriz)) {
+                ia.geraArvore(ia);
+                System.out.println(ia.a);
 
-            movimento = ia.jogada(ia);
-            if (movimento >= 0 && movimento < 9) {
-                if (!jogada) {
-                    matriz[movimento / 3][movimento % 3] = 1;
-                } else {
-                    matriz[movimento / 3][movimento % 3] = 2;
+                movimento = ia.jogada(ia);
+                if (movimento >= 0 && movimento < 9) {
+                    if (!jogada) {
+                        matriz[movimento / 3][movimento % 3] = 1;
+                    } else {
+                        matriz[movimento / 3][movimento % 3] = 2;
+                    }
                 }
             }
-
             ganhou();
             repaint();
         } else if (players == 0) {
@@ -320,10 +321,11 @@ public class JogoVelha extends JPanel implements MouseListener {
                 ia = new Arvore(matriz, 2);
                 ia.qntAltura = qntAltura;
                 ia.qntNo = qntNo;
-                ia.geraArvore(ia);
-                movimento = ia.jogada(ia);
-                matriz[movimento / 3][movimento % 3] = 1;
-
+                if (ia.vazio(matriz)) {
+                    ia.geraArvore(ia);
+                    movimento = ia.jogada(ia);
+                    matriz[movimento / 3][movimento % 3] = 1;
+                }
                 ganhou();
                 repaint();
                 if (vitoria == 0) {
@@ -346,10 +348,12 @@ public class JogoVelha extends JPanel implements MouseListener {
                     ia = new Arvore(mat, 2);
                     ia.qntAltura = qntAltura2;
                     ia.qntNo = qntNo2;
-                    ia.geraArvore(ia);
-                    movimento = ia.jogada(ia);
-                    if (movimento >= 0 && movimento < 9) {
-                        matriz[movimento / 3][movimento % 3] = 2;
+                    if (ia.vazio(matriz)) {
+                        ia.geraArvore(ia);
+                        movimento = ia.jogada(ia);
+                        if (movimento >= 0 && movimento < 9) {
+                            matriz[movimento / 3][movimento % 3] = 2;
+                        }
                     }
                     ganhou();
                     repaint();
@@ -376,10 +380,12 @@ public class JogoVelha extends JPanel implements MouseListener {
                     ia = new Arvore(mat, 2);
                     ia.qntAltura = qntAltura2;
                     ia.qntNo = qntNo2;
-                    ia.geraArvore(ia);
-                    movimento = ia.jogada(ia);
-                    if (movimento >= 0 && movimento < 9) {
-                        matriz[movimento / 3][movimento % 3] = 2;
+                    if (ia.vazio(matriz)) {
+                        ia.geraArvore(ia);
+                        movimento = ia.jogada(ia);
+                        if (movimento >= 0 && movimento < 9) {
+                            matriz[movimento / 3][movimento % 3] = 2;
+                        }
                     }
                     ganhou();
                     repaint();
@@ -393,10 +399,12 @@ public class JogoVelha extends JPanel implements MouseListener {
                         ia = new Arvore(matriz, 2);
                         ia.qntAltura = qntAltura;
                         ia.qntNo = qntNo;
-                        ia.geraArvore(ia);
-                        movimento = ia.jogada(ia);
-                        if (movimento >= 0 && movimento < 9) {
-                            matriz[movimento / 3][movimento % 3] = 1;
+                        if (ia.vazio(matriz)) {
+                            ia.geraArvore(ia);
+                            movimento = ia.jogada(ia);
+                            if (movimento >= 0 && movimento < 9) {
+                                matriz[movimento / 3][movimento % 3] = 1;
+                            }
                         }
                         ganhou();
                         repaint();
