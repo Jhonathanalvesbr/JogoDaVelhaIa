@@ -263,6 +263,17 @@ public class Arvore {
             return false;
         }
     }
+
+    public boolean vazio(int jogo[][]) {
+        for (int x = 0; x < 9; x++) {
+            if (jogo[x / 3][x % 3] == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     int a = 0;
 
     public void verificaJogada(Arvore no) {
